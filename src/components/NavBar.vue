@@ -4,7 +4,7 @@
       <a href="#">
         <img src="../assets/logo-tm-transparente.png" />
       </a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <ul id="nav-mobile" class="right">
         <li><a href="https://tinmarin.org">Sitio web</a></li>
       </ul>
     </div>

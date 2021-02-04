@@ -31,7 +31,7 @@ export default {
       username: '',
       password: '',
       endpoint: 'https://tin-marin-app.herokuapp.com/api/v1/auth/login',
-      datos: ''
+      token: ''
     }
   },
   methods: {
@@ -41,8 +41,7 @@ export default {
           username: this.username,
           password: this.password
         })
-        this.datos = data.token
-        console.log(data.token)
+        this.token = data.token
       } catch (error) {
         throw new Error('Something went wrong. Try later.')
       }
