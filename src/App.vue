@@ -1,24 +1,26 @@
 <template>
-  <nav-bar></nav-bar>
-  <login-box></login-box>
+  <router-view/>
 </template>
-
-<script>
-import NavBar from '@/components/NavBar.vue'
-import LoginBox from './components/LoginBox.vue'
-
-export default {
-  components: {
-    NavBar,
-    LoginBox
-  }
-}
-</script>
 
 <style>
 #app {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
