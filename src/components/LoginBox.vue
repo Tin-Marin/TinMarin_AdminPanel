@@ -54,4 +54,8 @@ export default {
 form div img {
   height: 200px;
 }
+
+button {
+  font-family: 'Montserrat';
+}
 </style>

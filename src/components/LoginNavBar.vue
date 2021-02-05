@@ -13,12 +13,13 @@
 
 <script>
 export default {
-  template: 'navbar'
+  template: 'loginnavbar'
 }
 </script>
 
 <style scoped>
 nav ul {
+  font-weight: 400;
   text-transform: uppercase;
 }
 
