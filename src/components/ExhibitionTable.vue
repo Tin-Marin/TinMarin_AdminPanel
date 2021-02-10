@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <table class="striped centered responsive-table">
       <thead>
         <tr>
@@ -14,7 +14,7 @@
             <input type="text" :placeholder="field" required>
           </td>
         </tr>
-        <tr v-for="field of educationAreas" :key="field.id">
+        <tr v-for="field of exhibitions" :key="field.id">
           <td><input :value="field.id"/></td>
           <td><input :value="field.name"/></td>
           <td><textarea :value="field.description"></textarea></td>
@@ -42,7 +42,7 @@ export default {
     return {
       fields: ['ID', 'Nombre', 'Descripción', 'Imagen', 'Patrocinador', 'Imagen del patrocinador', 'Áreas de educación', 'Edad min.', 'Edad Max', 'Duración', 'Capacidad', 'Dato curioso'],
       creationFields: ['Nombre', 'Descripción', 'Imagen', 'Patrocinador', 'Imagen del patrocinador', 'Áreas de educación', 'Edad min.', 'Edad Max', 'Duración', 'Capacidad', 'Dato curioso'],
-      educationAreas: [
+      exhibitions: [
         {
           id: 1,
           name: 'whatever',
