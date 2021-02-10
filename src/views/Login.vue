@@ -7,8 +7,8 @@
 
 <script>
 // @ is an alias to /src
-import LoginNavBar from '@/components/LoginNavBar'
-import LoginBox from '@/components/LoginBox'
+import LoginNavBar from '@/components/login/LoginNavBar'
+import LoginBox from '@/components/login/LoginBox'
 
 export default {
   name: 'Login',

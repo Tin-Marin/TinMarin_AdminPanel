@@ -10,14 +10,14 @@
 </template>
 
 <script>
-import EducationAreaTable from '../components/EducationAreaTable.vue'
-import ExhibitionTable from '../components/ExhibitionTable.vue'
-import FaqTable from '../components/FAQTable.vue'
-import RecommendationTable from '../components/RecommendationTable.vue'
-import RecommendedWebsiteTable from '../components/RecommendedWebsiteTable.vue'
-import SuggestionTable from '../components/SuggestionTable.vue'
-import SuggestionTypeTable from '../components/SuggestionTypeTable.vue'
-import HomeNavBar from '../components/HomeNavBar.vue'
+import EducationAreaTable from '../components/home/EducationAreaTable.vue'
+import ExhibitionTable from '../components/home/ExhibitionTable.vue'
+import FaqTable from '../components/home/FAQTable.vue'
+import RecommendationTable from '../components/home/RecommendationTable.vue'
+import RecommendedWebsiteTable from '../components/home/RecommendedWebsiteTable.vue'
+import SuggestionTable from '../components/home/SuggestionTable.vue'
+import SuggestionTypeTable from '../components/home/SuggestionTypeTable.vue'
+import HomeNavBar from '../components/home/HomeNavBar.vue'
 import { mapState } from 'vuex'
 
 export default {

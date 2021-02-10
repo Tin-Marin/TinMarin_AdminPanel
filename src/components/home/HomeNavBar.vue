@@ -1,8 +1,8 @@
 <template>
   <nav class="nav-extended blue darken-2" :class="views[2].active ? 'huge-navbar' : 'normal-navbar'">
     <div class="nav-wrapper">
-      <a href="#" class="left">
-        <img src="../assets/logo-tm-transparente.png" />
+      <a @click="resetView" href="#" class="left">
+        <img src="../../assets/logo-tm-transparente.png" />
       </a>
     </div>
     <div class="nav-content">
