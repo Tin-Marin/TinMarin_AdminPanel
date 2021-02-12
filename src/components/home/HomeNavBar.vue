@@ -1,9 +1,10 @@
 <template>
-  <nav class="nav-extended blue darken-2" :class="views[2].active ? 'huge-navbar' : 'normal-navbar'">
+  <nav class="nav-extended blue darken-2">
     <div class="nav-wrapper">
-      <a @click="resetView" href="#" class="left">
-        <img src="../../assets/logo-tm-transparente.png" />
-      </a>
+        <a @click="resetView" href="#" class="center">
+          <img src="../../assets/logo-tm-transparente.png" />
+        </a>
+        <a id="logout" class="left">Loguot</a>
     </div>
     <div class="nav-content">
       <ul class="tabs tabs-transparent">
@@ -46,15 +47,17 @@ export default {
 </script>
 
 <style scoped>
-.huge-navbar {
-  width: 400%;
-}
-
-.normal-navbar {
-  width: 100%;
+nav {
+  position: fixed;
+  top: 0;
 }
 
 img {
   height: 65px;
+}
+
+#logout {
+  margin-left: 25px;
+  text-transform: uppercase;
 }
 </style>

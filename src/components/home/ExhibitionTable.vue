@@ -79,6 +79,7 @@ export default {
 
 <style scoped>
 table {
+  margin-top: 140px;
   overflow-y: scroll;
   width: 400%;
 }

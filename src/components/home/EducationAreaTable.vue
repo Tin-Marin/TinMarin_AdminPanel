@@ -46,5 +46,7 @@ export default {
 </script>
 
 <style scoped>
-
+table {
+  margin-top: 140px;
+}
 </style>
