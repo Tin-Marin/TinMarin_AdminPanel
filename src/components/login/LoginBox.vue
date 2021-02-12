@@ -15,7 +15,7 @@
           <label for="password">Contraseña</label>
         </div>
         <div class="col s12" v-if="!validCredentials">
-          <p class="red-text">Credenciales no válidas</p>
+          <p class="red-text">{{ message }}</p>
         </div>
         <div class="col s12 center-align">
           <button type="submit" class="btn blue darken-2 waves-effect" @click="login">Login</button>
@@ -33,18 +33,24 @@ export default {
       username: '',
       password: '',
       validCredentials: true,
-      response: ''
+      message: ''
     }
   },
   methods: {
     async login () {
-      const response = await this.$store.dispatch('retrieveToken', {
+      this.$store.dispatch('retrieveToken', {
         username: this.username,
         password: this.password
       })
-      if (response) {
-        this.$router.push('/home')
-      }
+        .then(response => {
+          this.validCredentials = true
+          this.message = ''
+          this.$router.push('/home')
+        })
+        .catch(() => {
+          this.validCredentials = false
+          this.message = 'Username does not match with specified password'
+        })
     }
   }
 }

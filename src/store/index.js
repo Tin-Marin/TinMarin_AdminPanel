@@ -62,11 +62,10 @@ export default createStore({
             if (token && status === 200) {
               localStorage.setItem('token', token)
               context.commit('retrieveToken', token)
-              resolve(response)
             }
+            resolve(response)
           })
           .catch(error => {
-            console.log(error)
             reject(error)
           })
       })
