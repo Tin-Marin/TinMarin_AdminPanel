@@ -7,12 +7,15 @@
           <img src="../../assets/logo-tm-transparente.png" />
         </div>
         <div class="col s12 input-field">
-          <input type="text" class="validate" id="username" v-model="username" required>
-          <label for="username">Username</label>
+          <input type="text" class="validate" id="username" v-model="username" autocomplete="off" required>
+          <label for="username">Usuario</label>
         </div>
         <div class="col s12 input-field">
-          <input type="password" class="validate" id="password" v-model="password" required>
-          <label for="password">Password</label>
+          <input type="password" class="validate" id="password" v-model="password" autocomplete="off" required>
+          <label for="password">Contraseña</label>
+        </div>
+        <div class="col s12" v-if="!validCredentials">
+          <p class="red-text">Credenciales no válidas</p>
         </div>
         <div class="col s12 center-align">
           <button type="submit" class="btn blue darken-2 waves-effect" @click="login">Login</button>
@@ -23,27 +26,24 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   template: 'loginbox',
   data () {
     return {
       username: '',
       password: '',
-      endpoint: 'https://tin-marin-app.herokuapp.com/api/v1/auth/login',
-      token: ''
+      validCredentials: true,
+      response: ''
     }
   },
   methods: {
     async login () {
-      try {
-        const { data } = await axios.post(this.endpoint, {
-          username: this.username,
-          password: this.password
-        })
-        this.token = data.token
-      } catch (error) {
-        throw new Error('Something went wrong. Try later.')
+      const response = await this.$store.dispatch('retrieveToken', {
+        username: this.username,
+        password: this.password
+      })
+      if (response) {
+        this.$router.push('/home')
       }
     }
   }
@@ -53,6 +53,10 @@ export default {
 <style scoped>
 form div img {
   height: 200px;
+}
+
+.input-field {
+    pointer-events: all !important;
 }
 
 button {

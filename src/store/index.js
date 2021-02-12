@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import axios from 'axios'
 
 export default createStore({
   state: {
@@ -35,11 +36,41 @@ export default createStore({
         name: 'Suggestion Types',
         active: false
       }
-    ]
+    ],
+    token: localStorage.getItem('token') || null
+  },
+  getters: {
+    loggedIn (state) {
+      return state.token !== null
+    }
   },
   mutations: {
+    retrieveToken (state, token) {
+      state.token = token
+    }
   },
   actions: {
+    retrieveToken (context, credentials) {
+      return new Promise((resolve, reject) => {
+        axios.post('/auth/login', {
+          username: credentials.username,
+          password: credentials.password
+        })
+          .then(response => {
+            const status = response.status
+            const token = response.data.token
+            if (token && status === 200) {
+              localStorage.setItem('token', token)
+              context.commit('retrieveToken', token)
+              resolve(response)
+            }
+          })
+          .catch(error => {
+            console.log(error)
+            reject(error)
+          })
+      })
+    }
   },
   modules: {
   }
