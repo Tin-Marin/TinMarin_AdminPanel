@@ -33,6 +33,12 @@ export default {
   },
   computed: {
     ...mapState(['views'])
+  },
+  created () {
+    const loggedIn = this.$store.getters.loggedIn
+    if (!loggedIn) {
+      this.$router.push('/')
+    }
   }
 }
 </script>
