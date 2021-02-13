@@ -15,14 +15,12 @@ export default {
   components: {
     LoginNavBar,
     LoginBox
+  },
+  created () {
+    const loggedIn = this.$store.getters.loggedIn
+    if (loggedIn) {
+      this.$router.push('/home')
+    }
   }
-  // mounted: {
-  //   loggedIn () {
-  //     const loggedIn = this.$store.getters.loggedIn
-  //     if (loggedIn) {
-  //       this.$router.push('/')
-  //     }
-  //   }
-  // }
 }
 </script>
