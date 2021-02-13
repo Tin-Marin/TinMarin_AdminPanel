@@ -16,5 +16,13 @@ export default {
     LoginNavBar,
     LoginBox
   }
+  // mounted: {
+  //   loggedIn () {
+  //     const loggedIn = this.$store.getters.loggedIn
+  //     if (loggedIn) {
+  //       this.$router.push('/')
+  //     }
+  //   }
+  // }
 }
 </script>

@@ -4,7 +4,7 @@
         <a @click="resetView" href="#" class="center">
           <img src="../../assets/logo-tm-transparente.png" />
         </a>
-        <a id="logout" class="left">Loguot</a>
+        <a @click="logout" id="logout" class="left">Loguot</a>
     </div>
     <div class="nav-content">
       <ul class="tabs tabs-transparent">
@@ -41,6 +41,9 @@ export default {
       for (const view of this.views) {
         view.active = false
       }
+    },
+    logout () {
+      this.$router.push('/logout')
     }
   }
 }
@@ -57,7 +60,9 @@ img {
 }
 
 #logout {
-  margin-left: 25px;
+  cursor:pointer;
+  padding-left: 25px;
+  padding-right: 25px;
   text-transform: uppercase;
 }
 </style>

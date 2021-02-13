@@ -47,6 +47,9 @@ export default createStore({
   mutations: {
     retrieveToken (state, token) {
       state.token = token
+    },
+    destroyToken (state) {
+      state.token = null
     }
   },
   actions: {
@@ -69,6 +72,12 @@ export default createStore({
             reject(error)
           })
       })
+    },
+    destroyToken (context) {
+      if (context.getters.loggedIn) {
+        localStorage.removeItem('token')
+        context.commit('destroyToken')
+      }
     }
   },
   modules: {
