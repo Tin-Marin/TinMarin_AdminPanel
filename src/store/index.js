@@ -42,6 +42,11 @@ export default createStore({
   getters: {
     loggedIn (state) {
       return state.token !== null
+    },
+    getHeader (state) {
+      return {
+        Authorization: 'Bearer ' + state.token
+      }
     }
   },
   mutations: {

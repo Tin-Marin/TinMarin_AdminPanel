@@ -7,8 +7,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="field of recommendedWebsites" :key="field.id">
-          <td>{{ field.id }}</td>
+        <!--Fix CORS-->
+        <tr v-for="field of suggestions" :key="field.id">
+          <td><i class="material-icons" @click="startEditing">create</i></td>
+          <td>{{ field._id }}</td>
           <td>{{ field.suggestionType }}</td>
           <td>{{ field.suggestion }}</td>
         </tr>
@@ -18,24 +20,26 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   template: 'suggestiontable',
   data () {
     return {
-      fields: ['ID', 'suggestionType', 'suggestion'],
-      recommendedWebsites: [
-        {
-          id: 1,
-          suggestionType: 'Suggestion Type 1',
-          suggestion: 'suggestion 1'
-        },
-        {
-          id: 2,
-          suggestionType: 'Suggestion Type 2',
-          suggestion: 'suggestion 2'
-        }
-      ]
+      fields: ['Actions', 'ID', 'suggestionType', 'suggestion'],
+      suggestions: []
     }
+  },
+  methods: {
+    async findSuggestions () {
+      const suggestions = await axios.get('/private/suggestions', {
+        headers: this.$store.getters.getHeader
+      })
+      this.suggestions = suggestions.data
+    }
+  },
+  async mounted () {
+    await this.findSuggestions()
   }
 }
 </script>

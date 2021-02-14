@@ -9,13 +9,31 @@
       <tbody>
         <tr>
           <td>
+            <a class="waves-effect green btn" @click="createNewEducationArea">save</a>
+          </td>
+          <td>
+            <!--TODO: separate from loop-->
           </td>
           <td v-for="(field, index) in creationFields" :key="index">
             <input type="text" :placeholder="field" required>
           </td>
         </tr>
-        <tr v-for="field of recommendedWebsites" :key="field.id">
-          <td><input :value="field.id" /></td>
+        <tr v-show="!editing" v-for="field of recommendedWebsites" :key="field._id">
+          <td><i class="material-icons" @click="startEditing">create</i></td>
+          <td>{{ field._id }}</td>
+          <td>{{ field.url }}</td>
+          <td>{{ field.image }}</td>
+          <td>{{ field.title }}</td>
+        </tr>
+        <tr v-show="editing" v-for="field of recommendedWebsites" :key="field.id">
+          <td>
+            <a class="waves-effect black btn">back</a>
+            <br>
+            <a class="waves-effect green btn">save</a>
+            <br>
+            <a class="waves-effect red btn">delete</a>
+          </td>
+          <td>{{ field._id }}</td>
           <td><input :value="field.url" /></td>
           <td><input :value="field.image" /></td>
           <td><input :value="field.title" /></td>
@@ -26,27 +44,45 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   template: 'recommendedwebsitetable',
   data () {
     return {
-      fields: ['ID', 'URL', 'Imagen', 'Título'],
+      editing: false,
+      newRecommendedWebsite: '',
+      fields: ['Actions', 'ID', 'URL', 'Imagen', 'Título'],
       creationFields: ['URL', 'Imagen', 'Título'],
-      recommendedWebsites: [
-        {
-          id: 1,
-          url: 'URL 1',
-          image: 'image1.jpg',
-          title: 'título 1'
-        },
-        {
-          id: 2,
-          url: 'URL 2',
-          image: 'image2.jpg',
-          title: 'título 2'
-        }
-      ]
+      recommendedWebsites: []
     }
+  },
+  methods: {
+    startEditing () {
+      if (this.editing) {
+        this.editing = false
+      } else {
+        this.editing = true
+      }
+    },
+    async createNewRecommendedWebsite () {
+      // TODO: Fix CORS
+      const recommendedWebsite = this.recommendedWebsites
+      const response = await axios.post('/private/recommended-websites', recommendedWebsite, {
+        headers: this.$store.getters.getHeader
+      })
+      if (response.data && response.status === 201) {
+        this.newRecommendedWebsite = ''
+        await this.findRecommendedWebsites()
+      }
+    },
+    async findRecommendedWebsites () {
+      const recommendedWebsites = await axios.get('/recommended-websites')
+      this.recommendedWebsites = recommendedWebsites.data
+    }
+  },
+  async mounted () {
+    await this.findRecommendedWebsites()
   }
 }
 </script>

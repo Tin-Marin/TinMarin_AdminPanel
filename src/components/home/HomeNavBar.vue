@@ -4,7 +4,7 @@
         <a @click="resetView" href="#" class="center">
           <img src="../../assets/logo-tm-transparente.png" />
         </a>
-        <a @click="logout" id="logout" class="left">Loguot</a>
+        <a @click="logout" id="logout" class="right">Loguot</a>
     </div>
     <div class="nav-content">
       <ul class="tabs tabs-transparent">
