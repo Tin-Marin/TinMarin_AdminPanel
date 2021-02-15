@@ -25,7 +25,7 @@
         </tr>
         <tr v-show="editing" v-for="field of educationAreas" :key="field.id">
           <td>
-            <a class="waves-effect black btn">back</a>
+            <a class="waves-effect black btn" @click="startEditing">back</a>
             <br>
             <a class="waves-effect green btn">save</a>
             <br>
@@ -61,7 +61,6 @@ export default {
       }
     },
     async createNewEducationArea () {
-      // TODO: Fix CORS
       const educationArea = {
         name: this.newEducationArea
       }
@@ -90,6 +89,12 @@ table {
 }
 
 .btn {
+  cursor: pointer;
+  position: inherit;
   width: 100px;
+}
+
+i {
+  cursor: pointer;
 }
 </style>

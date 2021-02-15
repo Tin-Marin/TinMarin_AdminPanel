@@ -9,14 +9,14 @@
       <tbody>
         <tr>
           <td>
-            <a class="waves-effect green btn" @click="createNewEducationArea">save</a>
+            <a class="waves-effect green btn" @click="createNewRecommendedWebsite">save</a>
           </td>
           <td>
             <!--TODO: separate from loop-->
           </td>
-          <td v-for="(field, index) in creationFields" :key="index">
-            <input type="text" :placeholder="field" required>
-          </td>
+          <td><input type="text" placeholder="URL" v-model="newRecommendedWebsite.url" required></td>
+          <td><input type="text" placeholder="Imagen" v-model="newRecommendedWebsite.image" required></td>
+          <td><input type="text" placeholder="Título" v-model="newRecommendedWebsite.title" required></td>
         </tr>
         <tr v-show="!editing" v-for="field of recommendedWebsites" :key="field._id">
           <td><i class="material-icons" @click="startEditing">create</i></td>
@@ -27,7 +27,7 @@
         </tr>
         <tr v-show="editing" v-for="field of recommendedWebsites" :key="field.id">
           <td>
-            <a class="waves-effect black btn">back</a>
+            <a class="waves-effect black btn" @click="startEditing">back</a>
             <br>
             <a class="waves-effect green btn">save</a>
             <br>
@@ -51,9 +51,12 @@ export default {
   data () {
     return {
       editing: false,
-      newRecommendedWebsite: '',
+      newRecommendedWebsite: {
+        url: '',
+        image: '',
+        title: ''
+      },
       fields: ['Actions', 'ID', 'URL', 'Imagen', 'Título'],
-      creationFields: ['URL', 'Imagen', 'Título'],
       recommendedWebsites: []
     }
   },
@@ -66,13 +69,16 @@ export default {
       }
     },
     async createNewRecommendedWebsite () {
-      // TODO: Fix CORS
-      const recommendedWebsite = this.recommendedWebsites
+      const recommendedWebsite = this.newRecommendedWebsite
       const response = await axios.post('/private/recommended-websites', recommendedWebsite, {
         headers: this.$store.getters.getHeader
       })
       if (response.data && response.status === 201) {
-        this.newRecommendedWebsite = ''
+        this.newRecommendedWebsite = {
+          url: '',
+          image: '',
+          title: ''
+        }
         await this.findRecommendedWebsites()
       }
     },
@@ -90,5 +96,15 @@ export default {
 <style scoped>
 table {
   margin-top: 140px;
+}
+
+.btn {
+  cursor: pointer;
+  position: inherit;
+  width: 100px;
+}
+
+i {
+  cursor: pointer;
 }
 </style>

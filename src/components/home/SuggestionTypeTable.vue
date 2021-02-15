@@ -24,7 +24,7 @@
         </tr>
         <tr v-show="editing" v-for="field of suggestionTypes" :key="field.id">
           <td>
-            <a class="waves-effect black btn">back</a>
+            <a class="waves-effect black btn" @click="startEditing">back</a>
             <br>
             <a class="waves-effect green btn">save</a>
             <br>
@@ -60,7 +60,6 @@ export default {
       }
     },
     async createNewSuggestionType () {
-      // TODO: Fix CORS
       const suggestionType = {
         name: this.newSuggestionType
       }
@@ -86,5 +85,15 @@ export default {
 <style scoped>
 table {
   margin-top: 140px;
+}
+
+.btn {
+  cursor: pointer;
+  position: inherit;
+  width: 100px;
+}
+
+i {
+  cursor: pointer;
 }
 </style>

@@ -9,14 +9,12 @@
       <tbody>
         <tr>
           <td>
-            <a class="waves-effect green btn" @click="createFAQ">save</a>
+            <a class="waves-effect green btn" @click="createNewFAQ">save</a>
           </td>
           <td>
           </td>
-          <!--TODO: separate from loop-->
-          <td v-for="(field, index) in creationFields" :key="index">
-            <input type="text" :placeholder="field" v-model="newFAQ" required>
-          </td>
+          <td><input type="text" placeholder="Pregunta" v-model="newFAQ.question" required></td>
+          <td><input type="text" placeholder="Respuesta" v-model="newFAQ.answer" required></td>
         </tr>
         <tr v-show="!editing" v-for="field of faqs" :key="field._id">
           <td><i class="material-icons" @click="startEditing">create</i></td>
@@ -26,7 +24,7 @@
         </tr>
         <tr v-show="editing" v-for="field of faqs" :key="field.id">
           <td>
-            <a class="waves-effect black btn">back</a>
+            <a class="waves-effect black btn" @click="startEditing">back</a>
             <br>
             <a class="waves-effect green btn">save</a>
             <br>
@@ -49,9 +47,11 @@ export default {
   data () {
     return {
       editing: false,
-      newFAQ: '',
+      newFAQ: {
+        question: '',
+        answer: ''
+      },
       fields: ['Actions', 'ID', 'Pregunta', 'Respuesta'],
-      creationFields: ['Pregunta', 'Respuesta'],
       faqs: []
     }
   },
@@ -69,13 +69,16 @@ export default {
         headers: this.$store.getters.getHeader
       })
       if (response.data && response.status === 201) {
-        this.newFAQ = ''
+        this.newFAQ = {
+          question: '',
+          answer: ''
+        }
         await this.findFAQ()
       }
     },
     async findFAQ () {
-      const faq = await axios.get('/faqs')
-      this.faqs = faq.data
+      const faqs = await axios.get('/faqs')
+      this.faqs = faqs.data
     }
   },
   async mounted () {
@@ -87,5 +90,15 @@ export default {
 <style scoped>
 table {
   margin-top: 140px;
+}
+
+.btn {
+  cursor: pointer;
+  position: inherit;
+  width: 100px;
+}
+
+i {
+  cursor: pointer;
 }
 </style>

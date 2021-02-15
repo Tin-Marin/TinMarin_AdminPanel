@@ -9,7 +9,7 @@
       <tbody>
         <!--Fix CORS-->
         <tr v-for="field of suggestions" :key="field.id">
-          <td><i class="material-icons" @click="startEditing">create</i></td>
+          <td><i class="material-icons red-text" @click="startEditing">clear</i></td>
           <td>{{ field._id }}</td>
           <td>{{ field.suggestionType }}</td>
           <td>{{ field.suggestion }}</td>
@@ -47,5 +47,9 @@ export default {
 <style scoped>
 table {
   margin-top: 140px;
+}
+
+i {
+  cursor: pointer;
 }
 </style>
