@@ -29,14 +29,14 @@
           <td>
             <a class="waves-effect black btn" @click="startEditing">back</a>
             <br>
-            <a class="waves-effect green btn">save</a>
+            <a class="waves-effect green btn" @click="updateRecommendedWebsite(field)">save</a>
             <br>
             <a class="waves-effect red btn">delete</a>
           </td>
           <td>{{ field._id }}</td>
-          <td><input :value="field.url" /></td>
-          <td><input :value="field.image" /></td>
-          <td><input :value="field.title" /></td>
+          <td><input v-model="field.url" /></td>
+          <td><input v-model="field.image" /></td>
+          <td><input v-model="field.title" /></td>
         </tr>
       </tbody>
     </table>
@@ -85,6 +85,19 @@ export default {
     async findRecommendedWebsites () {
       const recommendedWebsites = await axios.get('/recommended-websites')
       this.recommendedWebsites = recommendedWebsites.data
+    },
+    async updateRecommendedWebsite (recommendedWebsite) {
+      const newRecommendedWebsite = {
+        url: recommendedWebsite.url,
+        image: recommendedWebsite.image,
+        title: recommendedWebsite.title
+      }
+      const response = await axios.put('/private/recommended-websites/' + recommendedWebsite._id, newRecommendedWebsite, {
+        headers: this.$store.getters.getHeader
+      })
+      if (response === 200) {
+        await this.findRecommendedWebsites()
+      }
     }
   },
   async mounted () {

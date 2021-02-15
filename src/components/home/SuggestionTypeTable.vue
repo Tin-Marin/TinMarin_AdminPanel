@@ -26,12 +26,12 @@
           <td>
             <a class="waves-effect black btn" @click="startEditing">back</a>
             <br>
-            <a class="waves-effect green btn">save</a>
+            <a class="waves-effect green btn" @click="updateSuggestionType(field)">save</a>
             <br>
             <a class="waves-effect red btn">delete</a>
           </td>
           <td>{{ field._id }}</td>
-          <td><input :value="field.name"/></td>
+          <td><input v-model="field.name"/></td>
         </tr>
       </tbody>
     </table>
@@ -72,8 +72,19 @@ export default {
       }
     },
     async findSuggestionTypes () {
-      const suggestionTypes = await axios.get('/suggestiontypes')
-      this.suggestionTypes = suggestionTypes.data
+      const response = await axios.get('/suggestiontypes')
+      this.suggestionTypes = response.data
+    },
+    async updateSuggestionType (suggestionType) {
+      const newSuggestionType = {
+        name: suggestionType.name
+      }
+      const response = await axios.put('/private/suggestiontypes/' + suggestionType._id, newSuggestionType, {
+        headers: this.$store.getters.getHeader
+      })
+      if (response === 200) {
+        await this.findSuggestionTypes()
+      }
     }
   },
   async mounted () {

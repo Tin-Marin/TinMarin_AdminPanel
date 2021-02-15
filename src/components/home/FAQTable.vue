@@ -26,13 +26,13 @@
           <td>
             <a class="waves-effect black btn" @click="startEditing">back</a>
             <br>
-            <a class="waves-effect green btn">save</a>
+            <a class="waves-effect green btn" @click="updateFAQ(field)">save</a>
             <br>
             <a class="waves-effect red btn">delete</a>
           </td>
           <td>{{ field._id }}</td>
-          <td><input :value="field.question" /></td>
-          <td><input :value="field.answer" /></td>
+          <td><input v-model="field.question" /></td>
+          <td><input v-model="field.answer" /></td>
         </tr>
       </tbody>
     </table>
@@ -76,13 +76,25 @@ export default {
         await this.findFAQ()
       }
     },
-    async findFAQ () {
+    async findFAQs () {
       const faqs = await axios.get('/faqs')
       this.faqs = faqs.data
+    },
+    async updateFAQ (faq) {
+      const newFAQ = {
+        question: faq.question,
+        answer: faq.answer
+      }
+      const response = await axios.put('/private/faqs/' + faq._id, newFAQ, {
+        headers: this.$store.getters.getHeader
+      })
+      if (response === 200) {
+        await this.findFAQs()
+      }
     }
   },
   async mounted () {
-    await this.findFAQ()
+    await this.findFAQs()
   }
 }
 </script>

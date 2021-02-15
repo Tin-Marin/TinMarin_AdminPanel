@@ -27,12 +27,12 @@
           <td>
             <a class="waves-effect black btn" @click="startEditing">back</a>
             <br>
-            <a class="waves-effect green btn">save</a>
+            <a class="waves-effect green btn" @click="updateEducationArea(field)">save</a>
             <br>
             <a class="waves-effect red btn">delete</a>
           </td>
           <td>{{ field._id }}</td>
-          <td><input :value="field.name"/></td>
+          <td><input v-model="field.name"/></td>
         </tr>
       </tbody>
     </table>
@@ -75,6 +75,17 @@ export default {
     async findEducationAreas () {
       const educationAreas = await axios.get('/education-areas')
       this.educationAreas = educationAreas.data
+    },
+    async updateEducationArea (educationArea) {
+      const newEducationArea = {
+        name: educationArea.name
+      }
+      const response = await axios.put('/private/education-areas/' + educationArea._id, newEducationArea, {
+        headers: this.$store.getters.getHeader
+      })
+      if (response === 200) {
+        await this.findEducationAreas()
+      }
     }
   },
   async mounted () {
