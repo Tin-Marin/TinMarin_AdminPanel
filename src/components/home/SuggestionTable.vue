@@ -9,7 +9,7 @@
       <tbody>
         <!--Fix CORS-->
         <tr v-for="field of suggestions" :key="field.id">
-          <td><i class="material-icons red-text" @click="startEditing">clear</i></td>
+          <td><i class="material-icons red-text" @click="deleteSuggestion(field._id)">clear</i></td>
           <td>{{ field._id }}</td>
           <td>{{ field.suggestionType }}</td>
           <td>{{ field.suggestion }}</td>
@@ -36,6 +36,14 @@ export default {
         headers: this.$store.getters.getHeader
       })
       this.suggestions = suggestions.data
+    },
+    async deleteSuggestion (_id) {
+      const suggestion = await axios.delete('/private/suggestions/' + _id, {
+        headers: this.$store.getters.getHeader
+      })
+      if (suggestion.status === 204) {
+        await this.findSuggestions()
+      }
     }
   },
   async mounted () {
