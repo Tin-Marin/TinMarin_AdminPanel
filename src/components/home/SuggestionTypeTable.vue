@@ -28,7 +28,7 @@
             <br>
             <a class="waves-effect green btn" @click="updateSuggestionType(field)">save</a>
             <br>
-            <a class="waves-effect red btn">delete</a>
+            <a class="waves-effect red btn" @click="deleteSuggestionType(field)">delete</a>
           </td>
           <td>{{ field._id }}</td>
           <td><input v-model="field.name"/></td>
@@ -83,6 +83,14 @@ export default {
         headers: this.$store.getters.getHeader
       })
       if (response === 200) {
+        await this.findSuggestionTypes()
+      }
+    },
+    async deleteSuggestionType (suggestionType) {
+      const response = await axios.delete('/private/suggestiontypes/' + suggestionType._id, {
+        headers: this.$store.getters.getHeader
+      })
+      if (response.status === 204) {
         await this.findSuggestionTypes()
       }
     }

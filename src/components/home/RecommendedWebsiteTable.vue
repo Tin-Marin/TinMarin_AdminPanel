@@ -12,7 +12,6 @@
             <a class="waves-effect green btn" @click="createNewRecommendedWebsite">save</a>
           </td>
           <td>
-            <!--TODO: separate from loop-->
           </td>
           <td><input type="text" placeholder="URL" v-model="newRecommendedWebsite.url" required></td>
           <td><input type="text" placeholder="Imagen" v-model="newRecommendedWebsite.image" required></td>
@@ -31,7 +30,7 @@
             <br>
             <a class="waves-effect green btn" @click="updateRecommendedWebsite(field)">save</a>
             <br>
-            <a class="waves-effect red btn">delete</a>
+            <a class="waves-effect red btn" @click="deleteRecommendedWebsite(field)">delete</a>
           </td>
           <td>{{ field._id }}</td>
           <td><input v-model="field.url" /></td>
@@ -96,6 +95,14 @@ export default {
         headers: this.$store.getters.getHeader
       })
       if (response === 200) {
+        await this.findRecommendedWebsites()
+      }
+    },
+    async deleteRecommendedWebsite (recommendedWebsite) {
+      const response = await axios.delete('/private/recommended-websites/' + recommendedWebsite._id, {
+        headers: this.$store.getters.getHeader
+      })
+      if (response.status === 204) {
         await this.findRecommendedWebsites()
       }
     }

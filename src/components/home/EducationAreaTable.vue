@@ -13,7 +13,6 @@
           </td>
           <td>
           </td>
-          <!--TODO: separate from loop-->
           <td>
             <input type="text" placeholder="Nombre" v-model="newEducationArea" required>
           </td>
@@ -29,7 +28,7 @@
             <br>
             <a class="waves-effect green btn" @click="updateEducationArea(field)">save</a>
             <br>
-            <a class="waves-effect red btn">delete</a>
+            <a class="waves-effect red btn" @click="deleteEducationArea(field)">delete</a>
           </td>
           <td>{{ field._id }}</td>
           <td><input v-model="field.name"/></td>
@@ -84,6 +83,14 @@ export default {
         headers: this.$store.getters.getHeader
       })
       if (response === 200) {
+        await this.findEducationAreas()
+      }
+    },
+    async deleteEducationArea (educationArea) {
+      const response = await axios.delete('/private/education-areas/' + educationArea._id, {
+        headers: this.$store.getters.getHeader
+      })
+      if (response.status === 204) {
         await this.findEducationAreas()
       }
     }

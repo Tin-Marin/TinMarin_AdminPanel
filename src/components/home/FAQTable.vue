@@ -28,7 +28,7 @@
             <br>
             <a class="waves-effect green btn" @click="updateFAQ(field)">save</a>
             <br>
-            <a class="waves-effect red btn">delete</a>
+            <a class="waves-effect red btn" @click="deleteFAQ(field)">delete</a>
           </td>
           <td>{{ field._id }}</td>
           <td><input v-model="field.question" /></td>
@@ -73,7 +73,7 @@ export default {
           question: '',
           answer: ''
         }
-        await this.findFAQ()
+        await this.findFAQs()
       }
     },
     async findFAQs () {
@@ -89,6 +89,14 @@ export default {
         headers: this.$store.getters.getHeader
       })
       if (response === 200) {
+        await this.findFAQs()
+      }
+    },
+    async deleteFAQ (faq) {
+      const response = await axios.delete('/private/faqs/' + faq._id, {
+        headers: this.$store.getters.getHeader
+      })
+      if (response.status === 204) {
         await this.findFAQs()
       }
     }
