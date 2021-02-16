@@ -24,11 +24,11 @@
         </tr>
         <tr v-show="editing" v-for="field of faqs" :key="field.id">
           <td>
-            <a class="waves-effect black btn" @click="startEditing">back</a>
+            <a @click="startEditing"><i class="material-icons black-text">arrow_back</i></a>
             <br>
-            <a class="waves-effect green btn" @click="updateFAQ(field)">save</a>
+            <a @click="updateFAQ(field)"><i class="material-icons green-text">check</i></a>
             <br>
-            <a class="waves-effect red btn" @click="deleteFAQ(field)">delete</a>
+            <a @click="deleteFAQ(field)"><i class="material-icons red-text">clear</i></a>
           </td>
           <td>{{ field._id }}</td>
           <td><input v-model="field.question" /></td>
