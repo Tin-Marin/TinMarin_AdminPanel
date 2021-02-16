@@ -114,7 +114,7 @@ table {
 
 .btn {
   cursor: pointer;
-  position: inherit;
+  position: static;
   width: 100px;
 }
 
