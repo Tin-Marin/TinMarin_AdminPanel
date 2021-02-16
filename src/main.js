@@ -6,6 +6,6 @@ import 'materialize-css/dist/css/materialize.min.css'
 import 'materialize-css'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'https://tin-marin-app.herokuapp.com/'
+axios.defaults.baseURL = 'https://tin-marin-app.herokuapp.com/api/v1'
 
 createApp(App).use(router).use(store).mount('#app')
