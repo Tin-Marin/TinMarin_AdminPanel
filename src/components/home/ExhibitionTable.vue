@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <div id="actions" class="container">
+    <div id="actions">
       <form action="#" class="row">
         <div class="col s4">
           <p>
@@ -28,7 +28,7 @@
         </div>
       </form>
     </div>
-    <div>
+    <div id="content">
       <form v-show="creating || (editing && selected)" class="container">
         <div class="row">
           <div class="col s12">
@@ -37,7 +37,7 @@
         </div>
         <div class="row">
           <div class="col s12">
-            <textarea type="text" placeholder="Descripción" v-model="newExhibition.description" required></textarea>
+            <textarea placeholder="Descripción" v-model="newExhibition.description" required></textarea>
           </div>
         </div>
         <div class="row">
@@ -91,7 +91,7 @@
         </div>
         <div class="row">
           <div class="col s12">
-            <textarea type="text" placeholder="Dato curioso" v-model="newExhibition.curiousInfo" required></textarea>
+            <textarea placeholder="Dato curioso" v-model="newExhibition.curiousInfo" required></textarea>
           </div>
         </div>
         <a v-if="creating" class="waves-effect green btn" @click="createNewExhibition">save</a>
@@ -219,7 +219,7 @@ export default {
       const response = await axios.put('/private/exhibitions/' + this.newExhibition._id, this.newExhibition, {
         headers: this.$store.getters.getHeader
       })
-      if (response === 200) {
+      if (response.data === 200) {
         this.reseter()
         await this.findEducationAreas()
       }
@@ -252,13 +252,27 @@ export default {
 
 <style scoped>
 #container {
-  margin-top: 150px;
+  margin-top: 140px;
+}
+
+#actions {
+  background: white;
+  position: fixed;
+  width: 100%;
+}
+
+#content {
+  margin-top: 60px;
+  position: absolute;
+  width: 100%;
+  z-index: -10000;
 }
 
 table {
   overflow-y: scroll;
   width: 400%;
 }
+
 .btn {
   cursor: pointer;
   margin: 10px;
