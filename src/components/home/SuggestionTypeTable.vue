@@ -14,7 +14,7 @@
           <td>
           </td>
           <td>
-            <input type="text" :placeholder="Nombre" v-model="newSuggestionType" required>
+            <input type="text" placeholder="Nombre" v-model="newSuggestionType" required>
           </td>
         </tr>
         <tr v-show="!editing" v-for="field of suggestionTypes" :key="field.id">
