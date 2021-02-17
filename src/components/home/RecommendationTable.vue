@@ -72,10 +72,12 @@
       <table class="striped centered">
         <thead>
           <tr v-show="deleting">
-            <th v-for="(field, index) in fieldsDeleting" :key="index">{{ field }}</th>
+            <th>Delete</th>
+            <th v-for="(field, index) in fields" :key="index">{{ field }}</th>
           </tr>
           <tr v-show="editing && !selected">
-            <th v-for="(field, index) in fieldsUpdating" :key="index">{{ field }}</th>
+            <th>Update</th>
+            <th v-for="(field, index) in fields" :key="index">{{ field }}</th>
           </tr>
         </thead>
         <tbody>
@@ -100,7 +102,6 @@
 <script>
 import axios from 'axios'
 
-// TODO: Fix arrays
 export default {
   template: 'recommedationtable',
   data () {
@@ -118,8 +119,7 @@ export default {
         source: '',
         image: ''
       },
-      fieldsDeleting: ['Delete', 'ID', 'Título', 'Descripción', 'Pasos', 'Fuente', 'Imagen'],
-      fieldsUpdating: ['Update', 'ID', 'Título', 'Descripción', 'Pasos', 'Fuente', 'Imagen'],
+      fields: ['ID', 'Título', 'Descripción', 'Pasos', 'Fuente', 'Imagen'],
       recommendations: []
     }
   },
