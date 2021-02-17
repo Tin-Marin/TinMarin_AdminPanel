@@ -71,7 +71,9 @@
           </div>
           <div class="col s9">
             <div v-for="(element, index) in numberOfEducationAreas" :key="index">
-              <input type="text" placeholder="Áreas de educación" v-model="newExhibition.educationArea[index]">
+              <select v-model="newExhibition.educationArea[index]">
+                <option v-for="(element, index) in educationAreas" :key="index" :value="element.name">{{element.name}}</option>
+              </select>
             </div>
           </div>
         </div>
@@ -101,10 +103,12 @@
       <table class="striped centered">
         <thead>
           <tr v-show="deleting">
-            <th v-for="(field, index) in fieldsDeleting" :key="index">{{ field }}</th>
+            <th>Delete</th>
+            <th v-for="(field, index) in fields" :key="index">{{ field }}</th>
           </tr>
           <tr v-show="editing && !selected">
-            <th v-for="(field, index) in fieldsUpdating" :key="index">{{ field }}</th>
+            <th>Update</th>
+            <th v-for="(field, index) in fields" :key="index">{{ field }}</th>
           </tr>
         </thead>
         <tbody>
@@ -160,8 +164,8 @@ export default {
         capacity: null,
         curiousInfo: ''
       },
-      fieldsDeleting: ['Delete', 'ID', 'Nombre', 'Descripción', 'Imagen', 'Patrocinador', 'Imagen del patrocinador', 'Áreas de educación', 'Edad min.', 'Edad Max', 'Duración', 'Capacidad', 'Dato curioso'],
-      fieldsUpdating: ['Update', 'ID', 'Nombre', 'Descripción', 'Imagen', 'Patrocinador', 'Imagen del patrocinador', 'Áreas de educación', 'Edad min.', 'Edad Max', 'Duración', 'Capacidad', 'Dato curioso'],
+      fields: ['ID', 'Nombre', 'Descripción', 'Imagen', 'Patrocinador', 'Imagen del patrocinador', 'Áreas de educación', 'Edad min.', 'Edad Max', 'Duración', 'Capacidad', 'Dato curioso'],
+      educationAreas: [],
       exhibitions: []
     }
   },
@@ -185,7 +189,19 @@ export default {
           break
       }
     },
+    async retrieveEducationAreas () {
+      const response = await axios.get('/education-areas')
+      if (response.status === 200) this.educationAreas = response.data
+    },
+    verifyEducationAreas () {
+      const fixedArray = this.newExhibition.educationArea.filter((value, index) => {
+        return this.newExhibition.educationArea.indexOf(value) === index
+      })
+      this.numberOfEducationAreas = fixedArray.length
+      this.newExhibition.educationArea = fixedArray
+    },
     async createNewExhibition () {
+      this.verifyEducationAreas()
       const exhibition = this.newExhibition
       const response = await axios.post('/private/exhibitions', exhibition, {
         headers: this.$store.getters.getHeader
@@ -246,6 +262,7 @@ export default {
   },
   async mounted () {
     await this.findExhibitions()
+    await this.retrieveEducationAreas()
   }
 }
 </script>
@@ -266,6 +283,10 @@ export default {
   position: absolute;
   width: 100%;
   z-index: -10000;
+}
+
+select {
+  display: initial;
 }
 
 table {
