@@ -98,37 +98,37 @@
         <a v-if="editing" class="waves-effect grey btn" @click="unselectToUpdate">back</a>
         <a v-if="editing" class="waves-effect blue darken-2 btn" @click="updateExhibition">save</a>
       </form>
+      <table class="striped centered">
+        <thead>
+          <tr v-show="deleting">
+            <th v-for="(field, index) in fieldsDeleting" :key="index">{{ field }}</th>
+          </tr>
+          <tr v-show="editing && !selected">
+            <th v-for="(field, index) in fieldsUpdating" :key="index">{{ field }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-show="deleting || (editing && !selected)" v-for="field of exhibitions" :key="field._id">
+            <td>
+              <i v-if="editing" class="material-icons" @click="selectToUpdate(field)">create</i>
+              <i v-if="deleting" class="material-icons red-text" @click="deleteExhibition(field)">clear</i>
+            </td>
+            <td>{{ field._id }}</td>
+            <td>{{ field.name }}</td>
+            <td>{{ field.description }}</td>
+            <td>{{ field.images }}</td>
+            <td>{{ field.sponsorName }}</td>
+            <td>{{ field.sponsorLogo }}</td>
+            <td>{{ field.educationArea }}</td>
+            <td>{{ field.minimunAge }}</td>
+            <td>{{ field.maximumAge }}</td>
+            <td>{{ field.duration }}</td>
+            <td>{{ field.capacity }}</td>
+            <td>{{ field.curiousInfo }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <table class="striped centered">
-      <thead>
-        <tr v-show="deleting">
-          <th v-for="(field, index) in fieldsDeleting" :key="index">{{ field }}</th>
-        </tr>
-        <tr v-show="editing && !selected">
-          <th v-for="(field, index) in fieldsUpdating" :key="index">{{ field }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-show="deleting || (editing && !selected)" v-for="field of exhibitions" :key="field._id">
-          <td>
-            <i v-if="editing" class="material-icons" @click="selectToUpdate(field)">create</i>
-            <i v-if="deleting" class="material-icons red-text" @click="deleteExhibition(field)">clear</i>
-          </td>
-          <td>{{ field._id }}</td>
-          <td>{{ field.name }}</td>
-          <td>{{ field.description }}</td>
-          <td>{{ field.images }}</td>
-          <td>{{ field.sponsorName }}</td>
-          <td>{{ field.sponsorLogo }}</td>
-          <td>{{ field.educationArea }}</td>
-          <td>{{ field.minimunAge }}</td>
-          <td>{{ field.maximumAge }}</td>
-          <td>{{ field.duration }}</td>
-          <td>{{ field.capacity }}</td>
-          <td>{{ field.curiousInfo }}</td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </template>
 

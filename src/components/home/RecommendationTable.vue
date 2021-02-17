@@ -69,31 +69,31 @@
         <a v-if="editing" class="waves-effect grey btn" @click="unselectToUpdate">back</a>
         <a v-if="editing" class="waves-effect blue darken-2 btn" @click="updateRecommendation">save</a>
       </form>
+      <table class="striped centered">
+        <thead>
+          <tr v-show="deleting">
+            <th v-for="(field, index) in fieldsDeleting" :key="index">{{ field }}</th>
+          </tr>
+          <tr v-show="editing && !selected">
+            <th v-for="(field, index) in fieldsUpdating" :key="index">{{ field }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-show="deleting || (editing && !selected)" v-for="field of recommendations" :key="field._id">
+            <td>
+              <i v-if="editing" class="material-icons" @click="selectToUpdate(field)">create</i>
+              <i v-if="deleting" class="material-icons red-text" @click="deleteRecommendation(field)">clear</i>
+            </td>
+            <td>{{ field._id }}</td>
+            <td>{{ field.title }}</td>
+            <td>{{ field.description }}</td>
+            <td>{{ field.steps }}</td>
+            <td>{{ field.source }}</td>
+            <td>{{ field.image }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <table class="striped centered">
-      <thead>
-        <tr v-show="deleting">
-          <th v-for="(field, index) in fieldsDeleting" :key="index">{{ field }}</th>
-        </tr>
-        <tr v-show="editing && !selected">
-          <th v-for="(field, index) in fieldsUpdating" :key="index">{{ field }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-show="deleting || (editing && !selected)" v-for="field of recommendations" :key="field._id">
-          <td>
-            <i v-if="editing" class="material-icons" @click="selectToUpdate(field)">create</i>
-            <i v-if="deleting" class="material-icons red-text" @click="deleteRecommendation(field)">clear</i>
-          </td>
-          <td>{{ field._id }}</td>
-          <td>{{ field.title }}</td>
-          <td>{{ field.description }}</td>
-          <td>{{ field.steps }}</td>
-          <td>{{ field.source }}</td>
-          <td>{{ field.image }}</td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </template>
 
