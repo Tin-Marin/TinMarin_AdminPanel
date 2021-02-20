@@ -215,7 +215,9 @@ export default {
       }
     },
     async findExhibitions () {
+      this.$store.dispatch('changeLoadingState')
       const exhibitions = await axios.get('/exhibitions')
+      this.$store.dispatch('changeLoadingState')
       this.exhibitions = exhibitions.data
     },
     async deleteExhibition (exhibition) {

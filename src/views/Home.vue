@@ -1,4 +1,5 @@
 <template>
+  <loader v-if="isLoading" />
   <home-nav-bar />
   <education-area-table :class="views[0].active ? '' : 'hide'" />
   <exhibition-table :class="views[2].active ? '' : 'hide'" />
@@ -10,6 +11,7 @@
 </template>
 
 <script>
+import Loader from '../components/general/Loader.vue'
 import EducationAreaTable from '../components/home/EducationAreaTable.vue'
 import ExhibitionTable from '../components/home/ExhibitionTable.vue'
 import FaqTable from '../components/home/FAQTable.vue'
@@ -21,7 +23,11 @@ import HomeNavBar from '../components/home/HomeNavBar.vue'
 import { mapState } from 'vuex'
 
 export default {
+  computed: {
+    ...mapState(['views', 'isLoading'])
+  },
   components: {
+    Loader,
     HomeNavBar,
     EducationAreaTable,
     ExhibitionTable,
@@ -31,9 +37,6 @@ export default {
     SuggestionTable,
     SuggestionTypeTable
   },
-  computed: {
-    ...mapState(['views'])
-  },
   created () {
     const loggedIn = this.$store.getters.loggedIn
     if (!loggedIn) {
@@ -42,7 +45,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

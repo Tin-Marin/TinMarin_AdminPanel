@@ -37,7 +37,8 @@ export default createStore({
         active: false
       }
     ],
-    token: localStorage.getItem('token') || null
+    token: localStorage.getItem('token') || null,
+    isLoading: false
   },
   getters: {
     loggedIn (state) {
@@ -47,6 +48,9 @@ export default createStore({
       return {
         Authorization: 'Bearer ' + state.token
       }
+    },
+    getLoadingState (state) {
+      return state.isLoading
     }
   },
   mutations: {
@@ -55,6 +59,10 @@ export default createStore({
     },
     destroyToken (state) {
       state.token = null
+    },
+    changeLoadingState (state) {
+      if (state.isLoading === true) state.isLoading = false
+      else state.isLoading = true
     }
   },
   actions: {
@@ -83,6 +91,9 @@ export default createStore({
         localStorage.removeItem('token')
         context.commit('destroyToken')
       }
+    },
+    changeLoadingState (context) {
+      context.commit('changeLoadingState')
     }
   },
   modules: {

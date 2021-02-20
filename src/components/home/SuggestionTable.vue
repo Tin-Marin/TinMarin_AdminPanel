@@ -33,9 +33,11 @@ export default {
   methods: {
     async findSuggestions () {
       try {
+        this.$store.dispatch('changeLoadingState')
         const suggestions = await axios.get('/private/suggestions', {
           headers: this.$store.getters.getHeader
         })
+        this.$store.dispatch('changeLoadingState')
         this.suggestions = suggestions.data
       } catch (error) {
         if (error.response.status === 401) {

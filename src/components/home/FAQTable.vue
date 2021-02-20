@@ -81,7 +81,9 @@ export default {
       }
     },
     async findFAQs () {
+      this.$store.dispatch('changeLoadingState')
       const faqs = await axios.get('/faqs')
+      this.$store.dispatch('changeLoadingState')
       this.faqs = faqs.data
     },
     async updateFAQ (faq) {

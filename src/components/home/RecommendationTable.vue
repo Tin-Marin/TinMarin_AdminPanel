@@ -158,7 +158,9 @@ export default {
       }
     },
     async findRecommendations () {
+      this.$store.dispatch('changeLoadingState')
       const recommendations = await axios.get('/recommendations')
+      this.$store.dispatch('changeLoadingState')
       this.recommendations = recommendations.data
     },
     async deleteRecommendation (recommendation) {

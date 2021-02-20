@@ -76,7 +76,9 @@ export default {
       }
     },
     async findSuggestionTypes () {
+      this.$store.dispatch('changeLoadingState')
       const response = await axios.get('/suggestiontypes')
+      this.$store.dispatch('changeLoadingState')
       this.suggestionTypes = response.data
     },
     async updateSuggestionType (suggestionType) {

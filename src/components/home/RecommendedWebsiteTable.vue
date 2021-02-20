@@ -86,7 +86,9 @@ export default {
       }
     },
     async findRecommendedWebsites () {
+      this.$store.dispatch('changeLoadingState')
       const recommendedWebsites = await axios.get('/recommended-websites')
+      this.$store.dispatch('changeLoadingState')
       this.recommendedWebsites = recommendedWebsites.data
     },
     async updateRecommendedWebsite (recommendedWebsite) {

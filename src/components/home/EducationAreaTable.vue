@@ -41,7 +41,6 @@
 
 <script>
 import axios from 'axios'
-// import { mapState } from 'vuex'
 import Loader from '@/components/general/Loader.vue'
 
 export default {
@@ -57,9 +56,6 @@ export default {
       educationAreas: []
     }
   },
-  // computed: {
-  //   ...mapState(['isLoading'])
-  // },
   methods: {
     startEditing () {
       if (this.editing) {
@@ -85,9 +81,9 @@ export default {
       }
     },
     async findEducationAreas () {
-      // this.$store.dispatch('changeLoadingState')
+      this.$store.dispatch('changeLoadingState')
       const educationAreas = await axios.get('/education-areas')
-      // this.$store.dispatch('changeLoadingState')
+      this.$store.dispatch('changeLoadingState')
       this.educationAreas = educationAreas.data
     },
     async updateEducationArea (educationArea) {
