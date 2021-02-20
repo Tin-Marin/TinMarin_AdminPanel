@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loader v-if="isLoading" />
     <table class="striped centered">
       <thead>
         <tr>
@@ -40,9 +41,14 @@
 
 <script>
 import axios from 'axios'
+// import { mapState } from 'vuex'
+import Loader from '@/components/general/Loader.vue'
 
 export default {
   template: 'educationareatable',
+  components: {
+    Loader
+  },
   data () {
     return {
       editing: false,
@@ -51,6 +57,9 @@ export default {
       educationAreas: []
     }
   },
+  // computed: {
+  //   ...mapState(['isLoading'])
+  // },
   methods: {
     startEditing () {
       if (this.editing) {
@@ -63,35 +72,49 @@ export default {
       const educationArea = {
         name: this.newEducationArea
       }
-      const response = await axios.post('/private/education-areas', educationArea, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.data && response.status === 201) {
-        this.newEducationArea = ''
-        await this.findEducationAreas()
+      try {
+        const response = await axios.post('/private/education-areas', educationArea, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.data && response.status === 201) {
+          this.newEducationArea = ''
+          await this.findEducationAreas()
+        }
+      } catch (error) {
+        if (error.response.status === 401) this.$router.push('/logout')
       }
     },
     async findEducationAreas () {
+      // this.$store.dispatch('changeLoadingState')
       const educationAreas = await axios.get('/education-areas')
+      // this.$store.dispatch('changeLoadingState')
       this.educationAreas = educationAreas.data
     },
     async updateEducationArea (educationArea) {
-      const newEducationArea = {
-        name: educationArea.name
-      }
-      const response = await axios.put('/private/education-areas/' + educationArea._id, newEducationArea, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response === 200) {
-        await this.findEducationAreas()
+      try {
+        const newEducationArea = {
+          name: educationArea.name
+        }
+        const response = await axios.put('/private/education-areas/' + educationArea._id, newEducationArea, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response === 200) {
+          await this.findEducationAreas()
+        }
+      } catch (error) {
+        if (error.response.status === 401) this.$router.push('/logout')
       }
     },
     async deleteEducationArea (educationArea) {
-      const response = await axios.delete('/private/education-areas/' + educationArea._id, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.status === 204) {
-        await this.findEducationAreas()
+      try {
+        const response = await axios.delete('/private/education-areas/' + educationArea._id, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.status === 204) {
+          await this.findEducationAreas()
+        }
+      } catch (error) {
+        if (error.response.status === 401) this.$router.push('/logout')
       }
     }
   },

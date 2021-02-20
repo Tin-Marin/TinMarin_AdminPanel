@@ -145,12 +145,16 @@ export default {
     },
     async createNewRecommendation () {
       const recommendation = this.newRecommendation
-      const response = await axios.post('/private/recommendations', recommendation, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.data && response.status === 201) {
-        this.reseter()
-        await this.findRecommendation()
+      try {
+        const response = await axios.post('/private/recommendations', recommendation, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.data && response.status === 201) {
+          this.reseter()
+          await this.findRecommendation()
+        }
+      } catch (error) {
+        if (error.response.status === 401) this.$router.push('/logout')
       }
     },
     async findRecommendations () {
@@ -158,11 +162,15 @@ export default {
       this.recommendations = recommendations.data
     },
     async deleteRecommendation (recommendation) {
-      const response = await axios.delete('/private/recommendations/' + recommendation._id, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.status === 204) {
-        await this.findRecommendations()
+      try {
+        const response = await axios.delete('/private/recommendations/' + recommendation._id, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.status === 204) {
+          await this.findRecommendations()
+        }
+      } catch (error) {
+        if (error.response.status === 401) this.$router.push('/logout')
       }
     },
     selectToUpdate (recommendation) {
@@ -174,12 +182,16 @@ export default {
       this.editing = true
     },
     async updateRecommendation () {
-      const response = await axios.put('/private/recommendations/' + this.newRecommendation._id, this.newRecommendation, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.data === 200) {
-        this.reseter()
-        await this.findRecommendations()
+      try {
+        const response = await axios.put('/private/recommendations/' + this.newRecommendation._id, this.newRecommendation, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.data === 200) {
+          this.reseter()
+          await this.findRecommendations()
+        }
+      } catch (error) {
+        if (error.response.status) this.$router.push('/logout')
       }
     },
     reseter () {

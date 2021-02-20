@@ -65,15 +65,19 @@ export default {
     },
     async createNewFAQ () {
       const faq = this.newFAQ
-      const response = await axios.post('/private/faqs', faq, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.data && response.status === 201) {
-        this.newFAQ = {
-          question: '',
-          answer: ''
+      try {
+        const response = await axios.post('/private/faqs', faq, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.data && response.status === 201) {
+          this.newFAQ = {
+            question: '',
+            answer: ''
+          }
+          await this.findFAQs()
         }
-        await this.findFAQs()
+      } catch (error) {
+        if (error.response.status === 401) this.$router.push('/logout')
       }
     },
     async findFAQs () {
@@ -81,15 +85,19 @@ export default {
       this.faqs = faqs.data
     },
     async updateFAQ (faq) {
-      const newFAQ = {
-        question: faq.question,
-        answer: faq.answer
-      }
-      const response = await axios.put('/private/faqs/' + faq._id, newFAQ, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response === 200) {
-        await this.findFAQs()
+      try {
+        const newFAQ = {
+          question: faq.question,
+          answer: faq.answer
+        }
+        const response = await axios.put('/private/faqs/' + faq._id, newFAQ, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response === 200) {
+          await this.findFAQs()
+        }
+      } catch (error) {
+        if (error.response.status === 401) this.$router.push('/logout')
       }
     },
     async deleteFAQ (faq) {

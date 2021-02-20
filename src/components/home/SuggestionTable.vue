@@ -32,17 +32,29 @@ export default {
   },
   methods: {
     async findSuggestions () {
-      const suggestions = await axios.get('/private/suggestions', {
-        headers: this.$store.getters.getHeader
-      })
-      this.suggestions = suggestions.data
+      try {
+        const suggestions = await axios.get('/private/suggestions', {
+          headers: this.$store.getters.getHeader
+        })
+        this.suggestions = suggestions.data
+      } catch (error) {
+        if (error.response.status === 401) {
+          this.$router.push('/logout')
+        }
+      }
     },
     async deleteSuggestion (_id) {
-      const suggestion = await axios.delete('/private/suggestions/' + _id, {
-        headers: this.$store.getters.getHeader
-      })
-      if (suggestion.status === 204) {
-        await this.findSuggestions()
+      try {
+        const suggestion = await axios.delete('/private/suggestions/' + _id, {
+          headers: this.$store.getters.getHeader
+        })
+        if (suggestion.status === 204) {
+          await this.findSuggestions()
+        }
+      } catch (error) {
+        if (error.response.status === 401) {
+          this.$router.push('/logout')
+        }
       }
     }
   },

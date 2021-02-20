@@ -60,15 +60,19 @@ export default {
       }
     },
     async createNewSuggestionType () {
-      const suggestionType = {
-        name: this.newSuggestionType
-      }
-      const response = await axios.post('/private/suggestiontypes', suggestionType, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.data && response.status === 201) {
-        this.newSuggestionType = ''
-        await this.findSuggestionTypes()
+      try {
+        const suggestionType = {
+          name: this.newSuggestionType
+        }
+        const response = await axios.post('/private/suggestiontypes', suggestionType, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.data && response.status === 201) {
+          this.newSuggestionType = ''
+          await this.findSuggestionTypes()
+        }
+      } catch (error) {
+        if (error.response.status) this.$router.push('/logout')
       }
     },
     async findSuggestionTypes () {
@@ -76,22 +80,30 @@ export default {
       this.suggestionTypes = response.data
     },
     async updateSuggestionType (suggestionType) {
-      const newSuggestionType = {
-        name: suggestionType.name
-      }
-      const response = await axios.put('/private/suggestiontypes/' + suggestionType._id, newSuggestionType, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response === 200) {
-        await this.findSuggestionTypes()
+      try {
+        const newSuggestionType = {
+          name: suggestionType.name
+        }
+        const response = await axios.put('/private/suggestiontypes/' + suggestionType._id, newSuggestionType, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response === 200) {
+          await this.findSuggestionTypes()
+        }
+      } catch (error) {
+        if (error.response.status) this.$router.push('/logout')
       }
     },
     async deleteSuggestionType (suggestionType) {
-      const response = await axios.delete('/private/suggestiontypes/' + suggestionType._id, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.status === 204) {
-        await this.findSuggestionTypes()
+      try {
+        const response = await axios.delete('/private/suggestiontypes/' + suggestionType._id, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.status === 204) {
+          await this.findSuggestionTypes()
+        }
+      } catch (error) {
+        if (error.response.status) this.$router.push('/logout')
       }
     }
   },

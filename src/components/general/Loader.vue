@@ -24,10 +24,11 @@ export default {
   z-index: 10;
 }
 .frame {
-  position: absolute;
-  top: 48%;
-  left: 48%;
-  margin: 0 auto;
+  align-items: center;
+  display: flex;
+  height: inherit;
+  justify-content: center;
+  margin: auto;
 }
 .lds-ripple {
   display: inline-block;
@@ -37,7 +38,7 @@ export default {
 }
 .lds-ripple div {
   position: absolute;
-  border: 4px solid #cef;
+  border: 4px solid #1976d2;
   opacity: 1;
   border-radius: 50%;
   animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;

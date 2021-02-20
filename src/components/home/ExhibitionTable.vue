@@ -137,7 +137,6 @@
 </template>
 
 <script>
-// TODO: develop the picker for the educaction area
 import axios from 'axios'
 
 export default {
@@ -201,14 +200,18 @@ export default {
       this.newExhibition.educationArea = fixedArray
     },
     async createNewExhibition () {
-      this.verifyEducationAreas()
-      const exhibition = this.newExhibition
-      const response = await axios.post('/private/exhibitions', exhibition, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.data && response.status === 201) {
-        this.reseter()
-        await this.findExhibitios()
+      try {
+        this.verifyEducationAreas()
+        const exhibition = this.newExhibition
+        const response = await axios.post('/private/exhibitions', exhibition, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.data && response.status === 201) {
+          this.reseter()
+          await this.findExhibitios()
+        }
+      } catch (error) {
+        if (error.response.status === 401) this.$router.push('/logout')
       }
     },
     async findExhibitions () {
@@ -216,11 +219,15 @@ export default {
       this.exhibitions = exhibitions.data
     },
     async deleteExhibition (exhibition) {
-      const response = await axios.delete('/private/exhibitions/' + exhibition._id, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.status === 204) {
-        await this.findExhibitions()
+      try {
+        const response = await axios.delete('/private/exhibitions/' + exhibition._id, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.status === 204) {
+          await this.findExhibitions()
+        }
+      } catch (error) {
+        if (error.response.status === 401) this.$router.push('/logout')
       }
     },
     selectToUpdate (exhibition) {
@@ -232,12 +239,16 @@ export default {
       this.editing = true
     },
     async updateExhibition () {
-      const response = await axios.put('/private/exhibitions/' + this.newExhibition._id, this.newExhibition, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.data === 200) {
-        this.reseter()
-        await this.findEducationAreas()
+      try {
+        const response = await axios.put('/private/exhibitions/' + this.newExhibition._id, this.newExhibition, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.data === 200) {
+          this.reseter()
+          await this.findEducationAreas()
+        }
+      } catch (error) {
+        if (error.response.status === 401) this.$router.push('/logout')
       }
     },
     reseter () {

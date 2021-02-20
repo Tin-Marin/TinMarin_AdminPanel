@@ -68,17 +68,21 @@ export default {
       }
     },
     async createNewRecommendedWebsite () {
-      const recommendedWebsite = this.newRecommendedWebsite
-      const response = await axios.post('/private/recommended-websites', recommendedWebsite, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.data && response.status === 201) {
-        this.newRecommendedWebsite = {
-          url: '',
-          image: '',
-          title: ''
+      try {
+        const recommendedWebsite = this.newRecommendedWebsite
+        const response = await axios.post('/private/recommended-websites', recommendedWebsite, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.data && response.status === 201) {
+          this.newRecommendedWebsite = {
+            url: '',
+            image: '',
+            title: ''
+          }
+          await this.findRecommendedWebsites()
         }
-        await this.findRecommendedWebsites()
+      } catch (error) {
+        if (error.response.status) this.$router.push('/logout')
       }
     },
     async findRecommendedWebsites () {
@@ -86,24 +90,32 @@ export default {
       this.recommendedWebsites = recommendedWebsites.data
     },
     async updateRecommendedWebsite (recommendedWebsite) {
-      const newRecommendedWebsite = {
-        url: recommendedWebsite.url,
-        image: recommendedWebsite.image,
-        title: recommendedWebsite.title
-      }
-      const response = await axios.put('/private/recommended-websites/' + recommendedWebsite._id, newRecommendedWebsite, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response === 200) {
-        await this.findRecommendedWebsites()
+      try {
+        const newRecommendedWebsite = {
+          url: recommendedWebsite.url,
+          image: recommendedWebsite.image,
+          title: recommendedWebsite.title
+        }
+        const response = await axios.put('/private/recommended-websites/' + recommendedWebsite._id, newRecommendedWebsite, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response === 200) {
+          await this.findRecommendedWebsites()
+        }
+      } catch (error) {
+        if (error.response.status === 401) this.$router.push('/logout')
       }
     },
     async deleteRecommendedWebsite (recommendedWebsite) {
-      const response = await axios.delete('/private/recommended-websites/' + recommendedWebsite._id, {
-        headers: this.$store.getters.getHeader
-      })
-      if (response.status === 204) {
-        await this.findRecommendedWebsites()
+      try {
+        const response = await axios.delete('/private/recommended-websites/' + recommendedWebsite._id, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.status === 204) {
+          await this.findRecommendedWebsites()
+        }
+      } catch (error) {
+        if (error.response.status) this.$router.push('/logout')
       }
     }
   },
