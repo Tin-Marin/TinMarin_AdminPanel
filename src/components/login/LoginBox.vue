@@ -1,5 +1,4 @@
 <template>
-  <loader v-if="isLoading"/>
   <div class="container grey lighten-3 z-depth-2"
     style="margin-top: 5%; padding-top: 25px; padding-left: 25px; padding-right: 25px; padding-bottom: 25px">
     <div class="row">
@@ -27,13 +26,8 @@
 </template>
 
 <script>
-import Loader from '@/components/general/Loader.vue'
-
 export default {
   template: 'loginbox',
-  components: {
-    Loader
-  },
   data () {
     return {
       username: '',
@@ -45,12 +39,12 @@ export default {
   },
   methods: {
     async login () {
-      this.isLoading = true
+      this.$store.dispatch('changeLoadingState')
       this.$store.dispatch('retrieveToken', {
         username: this.username,
         password: this.password
       })
-        .then(response => {
+        .then(() => {
           this.validCredentials = true
           this.message = ''
           this.$router.push('/home')
@@ -60,7 +54,7 @@ export default {
           this.message = 'Username does not match with specified password'
         })
         .finally(() => {
-          this.isLoading = false
+          this.$store.dispatch('changeLoadingState')
         })
     }
   }
