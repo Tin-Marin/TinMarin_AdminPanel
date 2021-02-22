@@ -57,7 +57,7 @@
         </div>
         <div class="row">
           <div class="col s12">
-            <input type="text" placeholder="Fuente" v-model="newRecommendation.source" required>
+            <input type="text" placeholder="Fuente" v-model="newRecommendation.source">
           </div>
         </div>
         <div class="row">
