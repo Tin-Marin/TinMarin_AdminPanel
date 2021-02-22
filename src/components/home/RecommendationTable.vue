@@ -65,9 +65,9 @@
             <input type="text" placeholder="Imagen" v-model="newRecommendation.image" required>
           </div>
         </div>
-        <a v-if="creating" class="waves-effect green btn" @click="createNewRecommendation">save</a>
-        <a v-if="editing" class="waves-effect grey btn" @click="unselectToUpdate">back</a>
-        <a v-if="editing" class="waves-effect blue darken-2 btn" @click="updateRecommendation">save</a>
+        <a v-if="creating" class="green btn" @click="createNewRecommendation">save</a>
+        <a v-if="editing" class="grey btn" @click="unselectToUpdate">back</a>
+        <a v-if="editing" class="blue darken-2 btn" @click="updateRecommendation">save</a>
       </form>
       <table class="striped centered">
         <thead>
@@ -178,6 +178,8 @@ export default {
     selectToUpdate (recommendation) {
       this.selected = true
       this.newRecommendation = recommendation
+      this.numberOfParagraphs = recommendation.description.length
+      this.numberOfSteps = recommendation.steps.length
     },
     unselectToUpdate () {
       this.reseter()
@@ -195,6 +197,8 @@ export default {
       } catch (error) {
         if (error.response.status) this.$router.push('/logout')
       }
+
+      this.unselectToUpdate()
     },
     reseter () {
       this.newRecommendation = {

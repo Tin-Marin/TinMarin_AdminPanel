@@ -26,6 +26,10 @@ export default {
     const loggedIn = this.$store.getters.loggedIn
     if (loggedIn) {
       this.$router.push('/home')
+    } else {
+      if (this.isLoading) {
+        this.$store.dispatch('changeLoadingState')
+      }
     }
   }
 }

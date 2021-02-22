@@ -71,7 +71,7 @@
           </div>
           <div class="col s9">
             <div v-for="(element, index) in numberOfEducationAreas" :key="index">
-              <select v-model="newExhibition.educationArea[index]">
+              <select v-model="newExhibition.educationArea[index]" required>
                 <option v-for="(element, index) in educationAreas" :key="index" :value="element.name">{{element.name}}</option>
               </select>
             </div>
@@ -79,10 +79,10 @@
         </div>
         <div class="row">
           <div class="col s3">
-            <input type="text" placeholder="Edad mínima" v-model.number="newExhibition.minimunAge" required>
+            <input type="text" placeholder="Edad mínima" v-model.number="newExhibition.minimumAge">
           </div>
           <div class="col s3">
-            <input type="text" placeholder="Edad máxima" v-model.number="newExhibition.maximumAge" required>
+            <input type="text" placeholder="Edad máxima" v-model.number="newExhibition.maximumAge">
           </div>
           <div class="col s3">
             <input type="text" placeholder="Duración" v-model.number="newExhibition.duration" required>
@@ -93,12 +93,12 @@
         </div>
         <div class="row">
           <div class="col s12">
-            <textarea placeholder="Dato curioso" v-model="newExhibition.curiousInfo" required></textarea>
+            <textarea placeholder="Dato curioso" v-model="newExhibition.curiousInfo"></textarea>
           </div>
         </div>
         <a v-if="creating" class="waves-effect green btn" @click="createNewExhibition">save</a>
         <a v-if="editing" class="waves-effect grey btn" @click="unselectToUpdate">back</a>
-        <a v-if="editing" class="waves-effect blue darken-2 btn" @click="updateExhibition">save</a>
+        <a v-if="editing" class="blue darken-2 btn" @click="updateExhibition">save</a>
       </form>
       <table class="striped centered">
         <thead>
@@ -124,7 +124,7 @@
             <td>{{ field.sponsorName }}</td>
             <td>{{ field.sponsorLogo }}</td>
             <td>{{ field.educationArea }}</td>
-            <td>{{ field.minimunAge }}</td>
+            <td>{{ field.minimumAge }}</td>
             <td>{{ field.maximumAge }}</td>
             <td>{{ field.duration }}</td>
             <td>{{ field.capacity }}</td>
@@ -157,7 +157,7 @@ export default {
         sponsorName: [],
         sponsorLogo: [],
         educationArea: [],
-        minimunAge: null,
+        minimumAge: null,
         maximumAge: null,
         duration: null,
         capacity: null,
@@ -235,6 +235,9 @@ export default {
     selectToUpdate (exhibition) {
       this.selected = true
       this.newExhibition = exhibition
+      this.numberOfSponsors = exhibition.sponsorName.length
+      this.numberOfLogos = exhibition.sponsorLogo.length
+      this.numberOfEducationAreas = exhibition.educationArea.length
     },
     unselectToUpdate () {
       this.reseter()
@@ -252,6 +255,7 @@ export default {
       } catch (error) {
         if (error.response.status === 401) this.$router.push('/logout')
       }
+      this.unselectToUpdate()
     },
     reseter () {
       this.newExhibition = {
@@ -261,7 +265,7 @@ export default {
         sponsorName: [],
         sponsorLogo: [],
         educationArea: [],
-        minimunAge: null,
+        minimumAge: null,
         maximumAge: null,
         duration: null,
         capacity: null,
