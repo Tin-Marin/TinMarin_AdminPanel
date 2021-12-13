@@ -20,6 +20,7 @@ import RecommendedWebsiteTable from '../components/home/RecommendedWebsiteTable.
 import SuggestionTable from '../components/home/SuggestionTable.vue'
 import SuggestionTypeTable from '../components/home/SuggestionTypeTable.vue'
 import HomeNavBar from '../components/home/HomeNavBar.vue'
+import QuizTable from '../components/home/QuizTable.vue'
 import { mapState } from 'vuex'
 
 export default {
@@ -35,7 +36,8 @@ export default {
     RecommendationTable,
     RecommendedWebsiteTable,
     SuggestionTable,
-    SuggestionTypeTable
+    SuggestionTypeTable,
+    QuizTable
   },
   created () {
     const loggedIn = this.$store.getters.loggedIn
