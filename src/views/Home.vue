@@ -8,6 +8,7 @@
   <recommended-website-table :class="views[5].active ? '' : 'hide'" />
   <suggestion-table :class="views[6].active ? '' : 'hide'" />
   <suggestion-type-table :class="views[7].active ? '' : 'hide'" />
+  <quiz-table :class="views[8].active ? '' : 'hide'" />
 </template>
 
 <script>

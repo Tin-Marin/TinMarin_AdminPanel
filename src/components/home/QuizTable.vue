@@ -32,6 +32,12 @@
       <form v-show="creating || (editing && selected)" class="container">
         <div class="row">
           <div class="col s12">
+            <select v-model="newQuiz.exhibition" required>
+                <option v-for="(element, index) in educationAreas" :key="index" :value="element.name">{{element.name}}</option>
+              </select>
+          </div>
+        <div class="row">
+          <div class="col s12">
             <input
               type="text"
               placeholder="Pregunta"
@@ -50,7 +56,7 @@
             />
           </div>
           <div class="col s9">
-            <div v-for="(element, index) in numberOfOptions" :key="index">
+            <div>
               <input
                 type="text"
                 placeholder="Opcion"
@@ -76,7 +82,7 @@
           @click="unselectToUpdate"
           >back</a
         >
-        <a v-if="editing" class="blue darken-2 btn" @click="updateExhibition"
+        <a v-if="editing" class="blue darken-2 btn" @click="updateQuiz"
           >save</a
         >
       </form>
@@ -112,6 +118,7 @@
               >
             </td>
             <td>{{ field._id }}</td>
+            <td>{{ field.exhibition }}</td>
             <td>{{ field.question }}</td>
             <td>{{ field.options }}</td>
             <td>{{ field.correct_option }}</td>
@@ -123,151 +130,132 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 
 export default {
-  template: 'exhibitiontable',
-  data () {
+  template: "quiztable",
+  data() {
     return {
       creating: false,
       editing: false,
       deleting: false,
       selected: false,
-      numberOfSponsors: null,
-      numberOfLogos: null,
-      numberOfEducationAreas: null,
-      newExhibition: {
-        name: '',
-        description: '',
-        images: [],
-        sponsorName: [],
-        sponsorLogo: [],
-        educationArea: [],
-        minimumAge: null,
-        maximumAge: null,
-        duration: null,
-        capacity: null,
-        curiousInfo: ''
+      numberOfOptions: null,
+      newQuiz: {
+        question: "",
+        options: [],
+        correct_option: "",
+        exhibition: "",
       },
-      fields: ['ID', 'Nombre', 'Descripción', 'Imagen', 'Patrocinador', 'Imagen del patrocinador', 'Áreas de educación', 'Edad min.', 'Edad Max', 'Duración', 'Capacidad', 'Dato curioso'],
-      educationAreas: [],
-      exhibitions: []
-    }
+      fields: ["ID", "Pregunta", "Opcion", "Opcion correcta", "Exhibiciones"],
+      quizzes: [],
+    };
   },
   methods: {
-    action (option) {
-      this.creating = false
-      this.editing = false
-      this.deleting = false
-      this.reseter()
+    action(option) {
+      this.creating = false;
+      this.editing = false;
+      this.deleting = false;
+      this.reseter();
       switch (option) {
         case 1:
-          this.creating = true
-          break
+          this.creating = true;
+          break;
         case 2:
-          this.editing = true
-          this.findExhibitions()
-          break
+          this.editing = true;
+          this.findQuizzes();
+          break;
         case 3:
-          this.deleting = true
-          this.findExhibitions()
-          break
+          this.deleting = true;
+          this.findQuizzes();
+          break;
       }
     },
-    async retrieveEducationAreas () {
-      const response = await axios.get('/education-areas')
-      if (response.status === 200) this.educationAreas = response.data
+    async retrieveExhibitions() {
+      const response = await axios.get("/exhibitions");
+      if (response.status === 200) this.exhibitions = response.data;
     },
-    verifyEducationAreas () {
-      const fixedArray = this.newExhibition.educationArea.filter((value, index) => {
-        return this.newExhibition.educationArea.indexOf(value) === index
-      })
-      this.numberOfEducationAreas = fixedArray.length
-      this.newExhibition.educationArea = fixedArray
+    verifyExhibitions() {
+      const fixedArray = this.newQuiz.exhibition.filter((value, index) => {
+        return this.newQuiz.exhibition.indexOf(value) === index;
+      });
+      this.newQuiz.exhibition = fixedArray;
     },
-    async createNewExhibition () {
+    async createNewQuiz() {
       try {
-        this.verifyEducationAreas()
-        const exhibition = this.newExhibition
-        const response = await axios.post('/private/exhibitions', exhibition, {
-          headers: this.$store.getters.getHeader
-        })
+        this.verifyExhibitions();
+        const quiz = this.newQuiz;
+        const response = await axios.post("/private/quizzes", quiz, {
+          headers: this.$store.getters.getHeader,
+        });
         if (response.data && response.status === 201) {
-          this.reseter()
-          await this.findExhibitios()
+          this.reseter();
+          await this.findQuizzes();
         }
       } catch (error) {
-        if (error.response.status === 401) this.$router.push('/logout')
+        if (error.response.status === 401) this.$router.push("/logout");
       }
     },
-    async findExhibitions () {
-      this.$store.dispatch('changeLoadingState')
-      const exhibitions = await axios.get('/exhibitions')
-      this.$store.dispatch('changeLoadingState')
-      this.exhibitions = exhibitions.data
+    async findQuizzes() {
+      this.$store.dispatch("changeLoadingState");
+      const quizzes = await axios.get("/quizzes");
+      this.$store.dispatch("changeLoadingState");
+      this.quizzes = quizzes.data;
     },
-    async deleteExhibition (exhibition) {
+    async deleteQuiz(quiz) {
       try {
-        const response = await axios.delete('/private/exhibitions/' + exhibition._id, {
-          headers: this.$store.getters.getHeader
-        })
+        const response = await axios.delete("/private/quizzes/" + quiz._id, {
+          headers: this.$store.getters.getHeader,
+        });
         if (response.status === 204) {
-          await this.findExhibitions()
+          await this.findQuizzes();
         }
       } catch (error) {
-        if (error.response.status === 401) this.$router.push('/logout')
+        if (error.response.status === 401) this.$router.push("/logout");
       }
     },
-    selectToUpdate (exhibition) {
-      this.selected = true
-      this.newExhibition = exhibition
-      this.numberOfSponsors = exhibition.sponsorName.length
-      this.numberOfLogos = exhibition.sponsorLogo.length
-      this.numberOfEducationAreas = exhibition.educationArea.length
+    selectToUpdate(quiz) {
+      this.selected = true;
+      this.newQuiz = quiz;
+      this.numberOfOptions = quiz.options.length;
     },
-    unselectToUpdate () {
-      this.reseter()
-      this.editing = true
+    unselectToUpdate() {
+      this.reseter();
+      this.editing = true;
     },
-    async updateExhibition () {
+    async updateQuiz() {
       try {
-        const response = await axios.put('/private/exhibitions/' + this.newExhibition._id, this.newExhibition, {
-          headers: this.$store.getters.getHeader
-        })
+        const response = await axios.put(
+          "/private/quizzes/" + this.newQuiz._id,
+          this.newQuiz,
+          {
+            headers: this.$store.getters.getHeader,
+          }
+        );
         if (response.data === 200) {
-          this.reseter()
-          await this.findEducationAreas()
+          this.reseter();
+          await this.findExhibitions();
         }
       } catch (error) {
-        if (error.response.status === 401) this.$router.push('/logout')
+        if (error.response.status === 401) this.$router.push("/logout");
       }
-      this.unselectToUpdate()
+      this.unselectToUpdate();
     },
-    reseter () {
-      this.newExhibition = {
-        name: '',
-        description: '',
-        images: [],
-        sponsorName: [],
-        sponsorLogo: [],
-        educationArea: [],
-        minimumAge: null,
-        maximumAge: null,
-        duration: null,
-        capacity: null,
-        curiouInfo: ''
-      }
-      this.numberOfSponsors = null
-      this.numberOfLogos = null
-      this.numberOfEducationAreas = null
-      this.selected = false
-    }
+    reseter() {
+      this.newQuiz = {
+        question: "",
+        options: [],
+        correct_option: "",
+        exhibition: "",
+      };
+      this.numberOfOptions = null;
+    },
   },
-  async mounted () {
-    await this.findExhibitions()
-    await this.retrieveEducationAreas()
-  }
-}
+  async mounted() {
+    await this.findQuizzes();
+    await this.retrieveExhibitions();
+  },
+};
 </script>
 
 <style scoped>

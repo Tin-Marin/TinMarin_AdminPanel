@@ -1,10 +1,10 @@
 <template>
   <nav class="nav-extended blue darken-2">
     <div class="nav-wrapper">
-        <a @click="resetView" href="#" class="center">
-          <img src="../../assets/logo-tm-transparente.png" />
-        </a>
-        <a @click="logout" id="logout" class="right">Loguot</a>
+      <a @click="resetView" href="#" class="center">
+        <img src="../../assets/logo-tm-transparente.png" />
+      </a>
+      <a @click="logout" id="logout" class="right">Loguot</a>
     </div>
     <div class="nav-content">
       <ul class="tabs tabs-transparent">
@@ -22,32 +22,32 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 
 export default {
-  template: 'homenavbar',
+  template: "homenavbar",
   computed: {
-    ...mapState(['views'])
+    ...mapState(["views"]),
   },
   methods: {
-    changeView (option) {
-      this.resetView()
+    changeView(option) {
+      this.resetView();
       for (const view of this.views) {
         if (option === this.views.indexOf(view)) {
-          view.active = true
+          view.active = true;
         }
       }
     },
-    resetView () {
+    resetView() {
       for (const view of this.views) {
-        view.active = false
+        view.active = false;
       }
     },
-    logout () {
-      this.$router.push('/logout')
-    }
-  }
-}
+    logout() {
+      this.$router.push("/logout");
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -61,7 +61,7 @@ img {
 }
 
 #logout {
-  cursor:pointer;
+  cursor: pointer;
   padding-left: 25px;
   padding-right: 25px;
   text-transform: uppercase;

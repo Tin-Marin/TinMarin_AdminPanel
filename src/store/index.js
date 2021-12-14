@@ -45,32 +45,32 @@ export default createStore({
     isLoading: false
   },
   getters: {
-    loggedIn (state) {
+    loggedIn(state) {
       return state.token !== null
     },
-    getHeader (state) {
+    getHeader(state) {
       return {
         Authorization: 'Bearer ' + state.token
       }
     },
-    getLoadingState (state) {
+    getLoadingState(state) {
       return state.isLoading
     }
   },
   mutations: {
-    retrieveToken (state, token) {
+    retrieveToken(state, token) {
       state.token = token
     },
-    destroyToken (state) {
+    destroyToken(state) {
       state.token = null
     },
-    changeLoadingState (state) {
+    changeLoadingState(state) {
       if (state.isLoading === true) state.isLoading = false
       else state.isLoading = true
     }
   },
   actions: {
-    retrieveToken (context, credentials) {
+    retrieveToken(context, credentials) {
       return new Promise((resolve, reject) => {
         axios.post('/auth/login', {
           username: credentials.username,
@@ -90,13 +90,13 @@ export default createStore({
           })
       })
     },
-    destroyToken (context) {
+    destroyToken(context) {
       if (context.getters.loggedIn) {
         localStorage.removeItem('token')
         context.commit('destroyToken')
       }
     },
-    changeLoadingState (context) {
+    changeLoadingState(context) {
       context.commit('changeLoadingState')
     }
   },
