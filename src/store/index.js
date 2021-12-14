@@ -35,6 +35,10 @@ export default createStore({
       {
         name: 'Suggestion Types',
         active: false
+      },
+      {
+        name: 'Tests',
+        active: false
       }
     ],
     token: localStorage.getItem('token') || null,
