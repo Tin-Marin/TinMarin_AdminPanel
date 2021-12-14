@@ -32,37 +32,7 @@
       <form v-show="creating || (editing && selected)" class="container">
         <div class="row">
           <div class="col s12">
-            <input type="text" placeholder="Nombre" v-model="newExhibition.name" required>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s12">
-            <textarea placeholder="Descripción" v-model="newExhibition.description" required></textarea>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s12">
-            <input type="text" placeholder="Imagen" v-model="newExhibition.images[0]" required>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s3">
-            <input type="number" placeholder="Número de patrocinadores" v-model.number="numberOfSponsors" required>
-          </div>
-          <div class="col s9">
-            <div v-for="(element, index) in numberOfSponsors" :key="index">
-              <input type="text" placeholder="Nombre de patrocinadores" v-model="newExhibition.sponsorName[index]">
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s3">
-            <input type="number" placeholder="Número de logos de patrocinadores" v-model.number="numberOfLogos" required>
-          </div>
-          <div class="col s9">
-            <div v-for="(element, index) in numberOfLogos" :key="index">
-              <input type="text" placeholder="Logo de patrocinadores" v-model="newExhibition.sponsorLogo[index]">
-            </div>
+            <input type="text" placeholder="Pregunta" v-model="newTest.question" required>
           </div>
         </div>
         <div class="row">
@@ -75,25 +45,6 @@
                 <option v-for="(element, index) in educationAreas" :key="index" :value="element.name">{{element.name}}</option>
               </select>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s3">
-            <input type="text" placeholder="Edad mínima" v-model.number="newExhibition.minimumAge">
-          </div>
-          <div class="col s3">
-            <input type="text" placeholder="Edad máxima" v-model.number="newExhibition.maximumAge">
-          </div>
-          <div class="col s3">
-            <input type="text" placeholder="Duración" v-model.number="newExhibition.duration" required>
-          </div>
-          <div class="col s3">
-            <input type="text" placeholder="Capacidad" v-model.number="newExhibition.capacity" required>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s12">
-            <textarea placeholder="Dato curioso" v-model="newExhibition.curiousInfo"></textarea>
           </div>
         </div>
         <a v-if="creating" class="waves-effect green btn" @click="createNewExhibition">save</a>
@@ -112,23 +63,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-show="deleting || (editing && !selected)" v-for="field of exhibitions" :key="field._id">
+          <tr v-show="deleting || (editing && !selected)" v-for="field of tests" :key="field._id">
             <td>
               <i v-if="editing" class="material-icons" @click="selectToUpdate(field)">create</i>
               <i v-if="deleting" class="material-icons red-text" @click="deleteExhibition(field)">clear</i>
             </td>
             <td>{{ field._id }}</td>
-            <td>{{ field.name }}</td>
+            <td>{{ field.question }}</td>
             <td>{{ field.description }}</td>
-            <td>{{ field.images }}</td>
-            <td>{{ field.sponsorName }}</td>
-            <td>{{ field.sponsorLogo }}</td>
-            <td>{{ field.educationArea }}</td>
-            <td>{{ field.minimumAge }}</td>
-            <td>{{ field.maximumAge }}</td>
-            <td>{{ field.duration }}</td>
-            <td>{{ field.capacity }}</td>
-            <td>{{ field.curiousInfo }}</td>
           </tr>
         </tbody>
       </table>
@@ -140,32 +82,21 @@
 import axios from 'axios'
 
 export default {
-  template: 'exhibitiontable',
+  template: 'testtable',
   data () {
     return {
       creating: false,
       editing: false,
       deleting: false,
       selected: false,
-      numberOfSponsors: null,
-      numberOfLogos: null,
       numberOfEducationAreas: null,
-      newExhibition: {
-        name: '',
-        description: '',
-        images: [],
-        sponsorName: [],
-        sponsorLogo: [],
-        educationArea: [],
-        minimumAge: null,
-        maximumAge: null,
-        duration: null,
-        capacity: null,
-        curiousInfo: ''
+      newTest: {
+        question: '',
+        educationArea: []
       },
-      fields: ['ID', 'Nombre', 'Descripción', 'Imagen', 'Patrocinador', 'Imagen del patrocinador', 'Áreas de educación', 'Edad min.', 'Edad Max', 'Duración', 'Capacidad', 'Dato curioso'],
+      fields: ['ID', 'Nombre', 'Áreas de educación'],
       educationAreas: [],
-      exhibitions: []
+      tests: []
     }
   },
   methods: {
@@ -180,11 +111,11 @@ export default {
           break
         case 2:
           this.editing = true
-          this.findExhibitions()
+          this.findTests()
           break
         case 3:
           this.deleting = true
-          this.findExhibitions()
+          this.findTests()
           break
       }
     },
@@ -193,59 +124,59 @@ export default {
       if (response.status === 200) this.educationAreas = response.data
     },
     verifyEducationAreas () {
-      const fixedArray = this.newExhibition.educationArea.filter((value, index) => {
-        return this.newExhibition.educationArea.indexOf(value) === index
+      const fixedArray = this.newTest.educationArea.filter((value, index) => {
+        return this.newTest.educationArea.indexOf(value) === index
       })
       this.numberOfEducationAreas = fixedArray.length
-      this.newExhibition.educationArea = fixedArray
+      this.newTest.educationArea = fixedArray
     },
-    async createNewExhibition () {
+    async createNewTest () {
       try {
         this.verifyEducationAreas()
-        const exhibition = this.newExhibition
-        const response = await axios.post('/private/exhibitions', exhibition, {
+        const test = this.newTest
+        const response = await axios.post('/private/tests', test, {
           headers: this.$store.getters.getHeader
         })
         if (response.data && response.status === 201) {
           this.reseter()
-          await this.findExhibitios()
+          await this.findTests()
         }
       } catch (error) {
         if (error.response.status === 401) this.$router.push('/logout')
       }
     },
-    async findExhibitions () {
+    async findTests () {
       this.$store.dispatch('changeLoadingState')
-      const exhibitions = await axios.get('/exhibitions')
+      const tests = await axios.get('/tests')
       this.$store.dispatch('changeLoadingState')
-      this.exhibitions = exhibitions.data
+      this.tests = tests.data
     },
-    async deleteExhibition (exhibition) {
+    async deleteTest (test) {
       try {
-        const response = await axios.delete('/private/exhibitions/' + exhibition._id, {
+        const response = await axios.delete('/private/tests/' + test._id, {
           headers: this.$store.getters.getHeader
         })
         if (response.status === 204) {
-          await this.findExhibitions()
+          await this.findTest()
         }
       } catch (error) {
         if (error.response.status === 401) this.$router.push('/logout')
       }
     },
-    selectToUpdate (exhibition) {
+    selectToUpdate (test) {
       this.selected = true
-      this.newExhibition = exhibition
-      this.numberOfSponsors = exhibition.sponsorName.length
-      this.numberOfLogos = exhibition.sponsorLogo.length
-      this.numberOfEducationAreas = exhibition.educationArea.length
+      this.newTest = test
+      this.numberOfSponsors = test.sponsorName.length
+      this.numberOfLogos = test.sponsorLogo.length
+      this.numberOfEducationAreas = test.educationArea.length
     },
     unselectToUpdate () {
       this.reseter()
       this.editing = true
     },
-    async updateExhibition () {
+    async updateTest () {
       try {
-        const response = await axios.put('/private/exhibitions/' + this.newExhibition._id, this.newExhibition, {
+        const response = await axios.put('/private/tests/' + this.newtest._id, this.newtest, {
           headers: this.$store.getters.getHeader
         })
         if (response.data === 200) {
@@ -258,27 +189,16 @@ export default {
       this.unselectToUpdate()
     },
     reseter () {
-      this.newExhibition = {
+      this.newTest = {
         name: '',
-        description: '',
-        images: [],
-        sponsorName: [],
-        sponsorLogo: [],
-        educationArea: [],
-        minimumAge: null,
-        maximumAge: null,
-        duration: null,
-        capacity: null,
-        curiouInfo: ''
+        educationArea: []
       }
-      this.numberOfSponsors = null
-      this.numberOfLogos = null
       this.numberOfEducationAreas = null
       this.selected = false
     }
   },
   async mounted () {
-    await this.findExhibitions()
+    await this.findTests()
     await this.retrieveEducationAreas()
   }
 }
