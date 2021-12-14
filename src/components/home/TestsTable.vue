@@ -36,20 +36,13 @@
           </div>
         </div>
         <div class="row">
-          <div class="col s3">
-            <input type="number" placeholder="Número áreas de educación" v-model.number="numberOfEducationAreas" required>
-          </div>
-          <div class="col s9">
-            <div v-for="(element, index) in numberOfEducationAreas" :key="index">
-              <select v-model="newExhibition.educationArea[index]" required>
-                <option v-for="(element, index) in educationAreas" :key="index" :value="element.name">{{element.name}}</option>
-              </select>
-            </div>
+          <div class="col s12">
+            <input type="text" placeholder="Respuesta" v-model="newTest.answer" required>
           </div>
         </div>
-        <a v-if="creating" class="waves-effect green btn" @click="createNewExhibition">save</a>
+        <a v-if="creating" class="waves-effect green btn" @click="createNewTest">save</a>
         <a v-if="editing" class="waves-effect grey btn" @click="unselectToUpdate">back</a>
-        <a v-if="editing" class="blue darken-2 btn" @click="updateExhibition">save</a>
+        <a v-if="editing" class="blue darken-2 btn" @click="updateTest">save</a>
       </form>
       <table class="striped centered">
         <thead>
@@ -66,11 +59,11 @@
           <tr v-show="deleting || (editing && !selected)" v-for="field of tests" :key="field._id">
             <td>
               <i v-if="editing" class="material-icons" @click="selectToUpdate(field)">create</i>
-              <i v-if="deleting" class="material-icons red-text" @click="deleteExhibition(field)">clear</i>
+              <i v-if="deleting" class="material-icons red-text" @click="deleteTest(field)">clear</i>
             </td>
             <td>{{ field._id }}</td>
             <td>{{ field.question }}</td>
-            <td>{{ field.description }}</td>
+            <td>{{ field.answer }}</td>
           </tr>
         </tbody>
       </table>
@@ -94,8 +87,7 @@ export default {
         question: '',
         educationArea: []
       },
-      fields: ['ID', 'Nombre', 'Áreas de educación'],
-      educationAreas: [],
+      fields: ['ID', 'Pregunta', 'Respuesta'],
       tests: []
     }
   },
@@ -119,20 +111,8 @@ export default {
           break
       }
     },
-    async retrieveEducationAreas () {
-      const response = await axios.get('/education-areas')
-      if (response.status === 200) this.educationAreas = response.data
-    },
-    verifyEducationAreas () {
-      const fixedArray = this.newTest.educationArea.filter((value, index) => {
-        return this.newTest.educationArea.indexOf(value) === index
-      })
-      this.numberOfEducationAreas = fixedArray.length
-      this.newTest.educationArea = fixedArray
-    },
     async createNewTest () {
       try {
-        this.verifyEducationAreas()
         const test = this.newTest
         const response = await axios.post('/private/tests', test, {
           headers: this.$store.getters.getHeader
