@@ -41,8 +41,13 @@
           </div>
         </div>
         <div class="row">
-          <div class="col s12">
-            <input type="text" placeholder="Imagen" v-model="newExhibition.images[0]" required>
+          <div class="col s3">
+            <input type="number" placeholder="Número de imagenes" v-model.number="numberOfImages" required>
+          </div>
+          <div class="col s9">
+            <div v-for="(element, index) in numberOfImages" :key="index">
+              <input type="text" placeholder="URL de la imagen" v-model="newExhibition.images[index]">
+            </div>
           </div>
         </div>
         <div class="row">
@@ -150,6 +155,7 @@ export default {
       numberOfSponsors: null,
       numberOfLogos: null,
       numberOfEducationAreas: null,
+      numberOfImages: null,
       newExhibition: {
         name: '',
         description: '',
@@ -165,6 +171,7 @@ export default {
       },
       fields: ['ID', 'Nombre', 'Descripción', 'Imagen', 'Patrocinador', 'Imagen del patrocinador', 'Áreas de educación', 'Edad min.', 'Edad Max', 'Duración', 'Capacidad', 'Dato curioso'],
       educationAreas: [],
+      images: [],
       exhibitions: []
     }
   },
@@ -192,6 +199,10 @@ export default {
       const response = await axios.get('/education-areas')
       if (response.status === 200) this.educationAreas = response.data
     },
+    async retrieveImages () {
+      const response = await axios.get('/images')
+      if (response.status === 200) this.images = response.data
+    },
     verifyEducationAreas () {
       const fixedArray = this.newExhibition.educationArea.filter((value, index) => {
         return this.newExhibition.educationArea.indexOf(value) === index
@@ -199,9 +210,17 @@ export default {
       this.numberOfEducationAreas = fixedArray.length
       this.newExhibition.educationArea = fixedArray
     },
+    verifyImages () {
+      const fixedArray = this.newExhibition.images.filter((value, index) => {
+        return this.newExhibition.images.indexOf(value) === index
+      })
+      this.numberOfImages = fixedArray.length
+      this.newExhibition.images = fixedArray
+    },
     async createNewExhibition () {
       try {
         this.verifyEducationAreas()
+        this.verifyImages()
         const exhibition = this.newExhibition
         const response = await axios.post('/private/exhibitions', exhibition, {
           headers: this.$store.getters.getHeader
@@ -238,6 +257,7 @@ export default {
       this.numberOfSponsors = exhibition.sponsorName.length
       this.numberOfLogos = exhibition.sponsorLogo.length
       this.numberOfEducationAreas = exhibition.educationArea.length
+      this.numerOfImages = exhibition.images.length
     },
     unselectToUpdate () {
       this.reseter()
@@ -275,6 +295,7 @@ export default {
       this.numberOfLogos = null
       this.numberOfEducationAreas = null
       this.selected = false
+      this.numberOfImages = null
     }
   },
   async mounted () {
