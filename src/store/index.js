@@ -37,7 +37,7 @@ export default createStore({
         active: false
       },
       {
-        name: 'Tests',
+        name: 'Quiz',
         active: false
       }
     ],

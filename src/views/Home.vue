@@ -8,7 +8,7 @@
   <recommended-website-table :class="views[5].active ? '' : 'hide'" />
   <suggestion-table :class="views[6].active ? '' : 'hide'" />
   <suggestion-type-table :class="views[7].active ? '' : 'hide'" />
-  <test-table :class="views[8].active ? '' : 'hide'" />
+  <quiz-table :class="views[8].active ? '' : 'hide'" />
 </template>
 
 <script>
@@ -22,7 +22,7 @@ import SuggestionTable from '../components/home/SuggestionTable.vue'
 import SuggestionTypeTable from '../components/home/SuggestionTypeTable.vue'
 import HomeNavBar from '../components/home/HomeNavBar.vue'
 import { mapState } from 'vuex'
-import TestTable from '../components/home/TestsTable.vue'
+import QuizTable from '../components/home/QuizTable.vue'
 
 export default {
   computed: {
@@ -38,7 +38,7 @@ export default {
     RecommendedWebsiteTable,
     SuggestionTable,
     SuggestionTypeTable,
-    TestTable
+    QuizTable
   },
   created () {
     const loggedIn = this.$store.getters.loggedIn

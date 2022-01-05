@@ -227,7 +227,7 @@ export default {
         })
         if (response.data && response.status === 201) {
           this.reseter()
-          await this.findExhibitios()
+          await this.findExhibitions()
         }
       } catch (error) {
         if (error.response.status === 401) this.$router.push('/logout')

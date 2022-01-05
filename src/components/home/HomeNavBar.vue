@@ -15,7 +15,7 @@
         <li class="tab" @click="changeView(5)"><a>Sitios recomendados</a></li>
         <li class="tab" @click="changeView(6)"><a>Sugerencias</a></li>
         <li class="tab" @click="changeView(7)"><a>Tipos de Sugerencias</a></li>
-        <li class="tab" @click="changeView(8)"><a>Examenes</a></li>
+        <li class="tab" @click="changeView(8)"><a>Quiz</a></li>
       </ul>
     </div>
   </nav>
