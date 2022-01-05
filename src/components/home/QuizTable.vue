@@ -28,6 +28,9 @@
           <td>
             <input type='text' placeholder='Opción correcta' v-model="newQuiz.correct_option" required/>
           </td>
+          <td>
+            <input type='text' placeholder='Exhibición' v-model="newQuiz.exhibition" required/>
+          </td>
         </tr>
         <tr v-show="!editing" v-for="field of quizzes" :key="field._id">
           <td><i class='material-icons' @click="startEditing">create</i></td>
@@ -35,6 +38,7 @@
           <td>{{ field.question }}</td>
           <td>{{ field.options }}</td>
           <td>{{ field.correct_option }}</td>
+          <td>{{field.exhibition}}</td>
         </tr>
         <tr v-show="editing" v-for="field of quizzes" :key="field.id">
           <td>
@@ -46,11 +50,13 @@
           </td>
           <td>{{ field._id }}</td>
           <td><input v-model='field.question' /></td>
-          <td><input v-model='field.options[0]' /></td>
-          <td><input v-model='field.options[1]' /></td>
-          <td><input v-model='field.options[2]' /></td>
-          <td><input v-model='field.options[3]' /></td>
+          <td>
+            <div v-for="(element, index) in 4" :key="index">
+              <input v-model="field.options[index]">
+            </div>
+          </td>
           <td><input v-model='field.correct_option' /></td>
+          <td><input v-model='field.exhibition' /></td>
         </tr>
       </tbody>
     </table>
@@ -67,9 +73,11 @@ export default {
       newQuiz: {
         question: '',
         options: [],
-        correct_option: ''
+        correct_option: '',
+        exhibition: ''
       },
-      fields: ['Actions', 'ID', 'Pregunta', 'Opciones', 'Opcion correcta'],
+      fields: ['Actions', 'ID', 'Pregunta', 'Opciones', 'Opcion correcta', 'Exhibición'],
+      exhibitions: [],
       quizzes: []
     }
   },
@@ -81,6 +89,10 @@ export default {
         this.editing = true
       }
     },
+    async retrieveExhibitions () {
+      const response = await axios.get('/exhibitions')
+      if (response.status === 200) this.exhibitions = response.data
+    },
     async createNewQuiz () {
       try {
         const quiz = this.newQuiz
@@ -91,7 +103,8 @@ export default {
           this.newQuiz = {
             question: '',
             options: [],
-            correct_option: ''
+            correct_option: '',
+            exhibition: ''
           }
           await this.findQuizzes()
         }
@@ -110,15 +123,12 @@ export default {
         const newQuiz = {
           question: quiz.question,
           options: quiz.options,
-          correct_option: quiz.correct_option
+          correct_option: quiz.correct_option,
+          exhibition: quiz.exhibition
         }
-        const response = await axios.put(
-          '/private/quizzes/' + quiz._id,
-          newQuiz,
-          {
-            headers: this.$store.getters.getHeader
-          }
-        )
+        const response = await axios.put('/private/quizzes/' + quiz._id, newQuiz, {
+          headers: this.$store.getters.getHeader
+        })
         if (response === 200) {
           await this.findQuizzes()
         }
@@ -137,6 +147,7 @@ export default {
   },
   async mounted () {
     await this.findQuizzes()
+    await this.retrieveExhibitions()
   }
 }
 </script>
