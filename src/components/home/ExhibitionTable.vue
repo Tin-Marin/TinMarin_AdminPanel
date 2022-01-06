@@ -171,7 +171,7 @@ export default {
       },
       fields: ['ID', 'Nombre', 'Descripción', 'Imagen', 'Patrocinador', 'Imagen del patrocinador', 'Áreas de educación', 'Edad min.', 'Edad Max', 'Duración', 'Capacidad', 'Dato curioso'],
       educationAreas: [],
-      images: [],
+      imagess: [],
       exhibitions: []
     }
   },
@@ -201,7 +201,7 @@ export default {
     },
     async retrieveImages () {
       const response = await axios.get('/images')
-      if (response.status === 200) this.images = response.data
+      if (response.status === 200) this.imagess = response.data
     },
     verifyEducationAreas () {
       const fixedArray = this.newExhibition.educationArea.filter((value, index) => {
@@ -257,7 +257,7 @@ export default {
       this.numberOfSponsors = exhibition.sponsorName.length
       this.numberOfLogos = exhibition.sponsorLogo.length
       this.numberOfEducationAreas = exhibition.educationArea.length
-      this.numerOfImages = exhibition.images.length
+      this.numberOfImages = exhibition.images.length
     },
     unselectToUpdate () {
       this.reseter()
