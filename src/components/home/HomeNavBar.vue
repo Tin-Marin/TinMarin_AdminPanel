@@ -2,7 +2,7 @@
   <nav class="nav-extended blue darken-2">
     <div class="nav-wrapper">
         <a @click="resetView" href="#" class="center">
-          <img src="../../assets/logo-tm-transparente.png" />
+          <img src="../../assets/logo-tm-recuadro.png" />
         </a>
         <a @click="logout" id="logout" class="right">Loguot</a>
     </div>
@@ -58,6 +58,9 @@ nav {
 
 img {
   height: 65px;
+  margin-top: 0.5em;
+  margin-bottom: -1.5em;
+  margin-left: 7em;
 }
 
 #logout {

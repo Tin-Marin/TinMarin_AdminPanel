@@ -2,7 +2,7 @@
   <nav>
     <div class="nav-wrapper blue darken-2">
       <a href="#">
-        <img src="../../assets/logo-tm-transparente.png" />
+        <img src="../../assets/logo-tm-recuadro.png" />
       </a>
       <ul id="nav-mobile" class="right">
         <li><a href="https://tinmarin.org">Sitio web</a></li>
@@ -24,6 +24,8 @@ nav ul {
 }
 
 img {
-  height: 100%;
+  height: 3.5rem;
+  margin-top: 0.4em;
+  margin-left: 7em;
 }
 </style>

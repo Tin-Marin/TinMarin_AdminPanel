@@ -1,5 +1,4 @@
 <template>
-  <loader v-if="isLoading" />
   <home-nav-bar />
   <education-area-table :class="views[0].active ? '' : 'hide'" />
   <exhibition-table :class="views[2].active ? '' : 'hide'" />
@@ -12,7 +11,6 @@
 </template>
 
 <script>
-import Loader from '../components/general/Loader.vue'
 import EducationAreaTable from '../components/home/EducationAreaTable.vue'
 import ExhibitionTable from '../components/home/ExhibitionTable.vue'
 import FaqTable from '../components/home/FAQTable.vue'
@@ -29,7 +27,6 @@ export default {
     ...mapState(['views', 'isLoading'])
   },
   components: {
-    Loader,
     HomeNavBar,
     EducationAreaTable,
     ExhibitionTable,
