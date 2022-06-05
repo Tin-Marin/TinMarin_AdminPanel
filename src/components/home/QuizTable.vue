@@ -29,7 +29,9 @@
             <input type='text' placeholder='Opción correcta' v-model="newQuiz.correct_option" required/>
           </td>
           <td>
-            <input type='text' placeholder='Exhibición' v-model="newQuiz.exhibition" required/>
+            <select v-model="newQuiz.exhibition" required>
+              <option v-for="(element, index) in exhibitions" :key="index" :value="element.name">{{element.name}}</option>
+            </select>
           </td>
         </tr>
         <tr v-show="!editing" v-for="field of quizzes" :key="field._id">
@@ -56,7 +58,11 @@
             </div>
           </td>
           <td><input v-model='field.correct_option' /></td>
-          <td><input v-model='field.exhibition' /></td>
+          <td>
+            <select v-model="field.exhibition" required>
+              <option v-for="(element, index) in exhibitions" :key="index" :value="element.name">{{element.name}}</option>
+            </select>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -93,6 +99,12 @@ export default {
       const response = await axios.get('/exhibitions')
       if (response.status === 200) this.exhibitions = response.data
     },
+    verifyExhibitions () {
+      const fixedConst = this.newQuiz.exhibition.filter((value) => {
+        return this.newQuiz.exhibition.name.indexOf(value)
+      })
+      this.newQuiz.exhibition = fixedConst
+    },
     async createNewQuiz () {
       try {
         const quiz = this.newQuiz
@@ -100,12 +112,7 @@ export default {
           headers: this.$store.getters.getHeader
         })
         if (response.data && response.status === 201) {
-          this.newQuiz = {
-            question: '',
-            options: [],
-            correct_option: '',
-            exhibition: ''
-          }
+          this.reseter()
           await this.findQuizzes()
         }
       } catch (error) {
@@ -143,6 +150,14 @@ export default {
       if (response.status === 204) {
         await this.findQuizzes()
       }
+    },
+    reseter () {
+      this.newQuiz = {
+        question: '',
+        options: [],
+        correct_option: '',
+        exhibition: ''
+      }
     }
   },
   async mounted () {
@@ -165,5 +180,9 @@ table {
 
 i {
   cursor: pointer;
+}
+
+select {
+  display: initial;
 }
 </style>
