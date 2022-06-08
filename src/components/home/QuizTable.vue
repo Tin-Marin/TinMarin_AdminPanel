@@ -136,6 +136,7 @@ export default {
         const response = await axios.put('/private/quizzes/' + quiz._id, newQuiz, {
           headers: this.$store.getters.getHeader
         })
+        console.log('LA RESPONSE', response)
         if (response === 200) {
           await this.findQuizzes()
         }

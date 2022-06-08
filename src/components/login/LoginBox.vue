@@ -4,7 +4,7 @@
     <div class="row">
       <form @submit.prevent="login">
         <div class="col s12 center-align">
-          <img src="../../assets/logo-tm-transparente.png" />
+          <img src="../../assets/logo-tm-recuadro.png" />
         </div>
         <div class="col s12 input-field">
           <input type="text" class="validate" id="username" v-model="username" autocomplete="off" required>
