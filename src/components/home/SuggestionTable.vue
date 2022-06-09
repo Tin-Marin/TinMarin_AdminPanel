@@ -16,7 +16,7 @@
         </tr>
       </tbody>
     </table>
-    <vue-excel-xlsx :data="suggestions" :columns="fields" :file-name="'Sugerencias'" :file-type="'xlsx'" :sheet-name="'Sugerencias'">
+    <vue-excel-xlsx class="download-btn" :data="suggestions" :columns="fields" :file-name="'Sugerencias'" :file-type="'xlsx'" :sheet-name="'Sugerencias'">
       Descargar Excel
     </vue-excel-xlsx>
   </div>
@@ -76,5 +76,19 @@ table {
 
 i {
   cursor: pointer;
+}
+
+.download-btn {
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  margin: 12px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.download-btn:hover {
+  background-color: RoyalBlue;
 }
 </style>
