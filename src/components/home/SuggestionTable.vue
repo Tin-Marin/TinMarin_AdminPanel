@@ -16,6 +16,9 @@
         </tr>
       </tbody>
     </table>
+    <vue-excel-xlsx :data="suggestions" :columns="fields" :file-name="'Sugerencias'" :file-type="'xlsx'" :sheet-name="'Sugerencias'">
+      Descargar Excel
+    </vue-excel-xlsx>
   </div>
 </template>
 
