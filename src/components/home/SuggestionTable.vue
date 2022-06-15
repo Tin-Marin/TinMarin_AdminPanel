@@ -16,6 +16,9 @@
         </tr>
       </tbody>
     </table>
+    <button class="download-btn" @click="goToExcel">
+      Revisar Excel
+    </button>
   </div>
 </template>
 
@@ -58,6 +61,9 @@ export default {
           this.$router.push('/logout')
         }
       }
+    },
+    goToExcel () {
+      window.open('https://docs.google.com/spreadsheets/d/1ZZuf7rZWZQ7zD3xuunPIf1573lPKmITZYejBd-ifPns/edit?usp=sharing')
     }
   },
   async mounted () {
@@ -73,5 +79,19 @@ table {
 
 i {
   cursor: pointer;
+}
+
+.download-btn {
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  margin: 12px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.download-btn:hover {
+  background-color: RoyalBlue;
 }
 </style>
