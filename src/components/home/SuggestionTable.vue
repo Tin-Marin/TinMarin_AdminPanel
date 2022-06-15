@@ -16,9 +16,9 @@
         </tr>
       </tbody>
     </table>
-    <vue-excel-xlsx class="download-btn" :data="suggestions" :columns="fields" :file-name="'Sugerencias'" :file-type="'xlsx'" :sheet-name="'Sugerencias'">
-      Descargar Excel
-    </vue-excel-xlsx>
+    <button class="download-btn" @click="goToExcel">
+      Revisar Excel
+    </button>
   </div>
 </template>
 
@@ -61,6 +61,9 @@ export default {
           this.$router.push('/logout')
         }
       }
+    },
+    goToExcel () {
+      window.open('https://docs.google.com/spreadsheets/d/1ZZuf7rZWZQ7zD3xuunPIf1573lPKmITZYejBd-ifPns/edit?usp=sharing')
     }
   },
   async mounted () {
