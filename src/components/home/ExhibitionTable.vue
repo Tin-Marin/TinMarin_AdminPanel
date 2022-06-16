@@ -101,6 +101,11 @@
             <textarea placeholder="Dato curioso" v-model="newExhibition.curiousInfo"></textarea>
           </div>
         </div>
+        <div class="row">
+          <div class="col s12">
+            <textarea placeholder="URL del Sonido de exhibición" v-model="newExhibition.sound"></textarea>
+          </div>
+        </div>
         <a v-if="creating" class="waves-effect green btn" @click="createNewExhibition">save</a>
         <a v-if="editing" class="waves-effect grey btn" @click="unselectToUpdate">back</a>
         <a v-if="editing" class="blue darken-2 btn" @click="updateExhibition">save</a>
@@ -134,6 +139,7 @@
             <td>{{ field.duration }}</td>
             <td>{{ field.capacity }}</td>
             <td>{{ field.curiousInfo }}</td>
+            <td>{{ field.sound }}</td>
           </tr>
         </tbody>
       </table>
@@ -167,9 +173,10 @@ export default {
         maximumAge: null,
         duration: null,
         capacity: null,
-        curiousInfo: ''
+        curiousInfo: '',
+        sound: ''
       },
-      fields: ['ID', 'Nombre', 'Descripción', 'Imagen', 'Patrocinador', 'Imagen del patrocinador', 'Áreas de educación', 'Edad min.', 'Edad Max', 'Duración', 'Capacidad', 'Dato curioso'],
+      fields: ['ID', 'Nombre', 'Descripción', 'Imagen', 'Patrocinador', 'Imagen del patrocinador', 'Áreas de educación', 'Edad min.', 'Edad Max', 'Duración', 'Capacidad', 'Dato curioso', 'Sonido'],
       educationAreas: [],
       imagess: [],
       exhibitions: []
@@ -289,7 +296,8 @@ export default {
         maximumAge: null,
         duration: null,
         capacity: null,
-        curiouInfo: ''
+        curiousInfo: '',
+        sound: ''
       }
       this.numberOfSponsors = null
       this.numberOfLogos = null
