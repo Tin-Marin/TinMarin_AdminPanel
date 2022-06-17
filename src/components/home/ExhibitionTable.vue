@@ -279,6 +279,7 @@ export default {
     },
     async updateExhibition () {
       try {
+        this.verifySound()
         const response = await axios.put('/private/exhibitions/' + this.newExhibition._id, this.newExhibition, {
           headers: this.$store.getters.getHeader
         })
