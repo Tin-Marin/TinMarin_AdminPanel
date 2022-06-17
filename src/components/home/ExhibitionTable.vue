@@ -21,7 +21,7 @@
         <div class="col s4">
           <p>
             <label>
-              <input @click="action(3)" name="group1" type="radio"  />
+              <input @click="action(3)" name="group1" type="radio" />
               <span>Borrar</span>
             </label>
           </p>
@@ -62,7 +62,8 @@
         </div>
         <div class="row">
           <div class="col s3">
-            <input type="number" placeholder="Número de logos de patrocinadores" v-model.number="numberOfLogos" required>
+            <input type="number" placeholder="Número de logos de patrocinadores" v-model.number="numberOfLogos"
+              required>
           </div>
           <div class="col s9">
             <div v-for="(element, index) in numberOfLogos" :key="index">
@@ -72,12 +73,14 @@
         </div>
         <div class="row">
           <div class="col s3">
-            <input type="number" placeholder="Número áreas de educación" v-model.number="numberOfEducationAreas" required>
+            <input type="number" placeholder="Número áreas de educación" v-model.number="numberOfEducationAreas"
+              required>
           </div>
           <div class="col s9">
             <div v-for="(element, index) in numberOfEducationAreas" :key="index">
               <select v-model="newExhibition.educationArea[index]" required>
-                <option v-for="(element, index) in educationAreas" :key="index" :value="element.name">{{element.name}}</option>
+                <option v-for="(element, index) in educationAreas" :key="index" :value="element.name">{{ element.name }}
+                </option>
               </select>
             </div>
           </div>
@@ -224,10 +227,14 @@ export default {
       this.numberOfImages = fixedArray.length
       this.newExhibition.images = fixedArray
     },
+    verifySound () {
+      if (this.newExhibition.sound === '') this.newExhibition.sound = 'https://firebasestorage.googleapis.com/v0/b/tinmarinapp-32b99.appspot.com/o/exhibitSound.mp3?alt=media&token=68d25e82-34b4-4cad-82f7-303bde8b7eb1'
+    },
     async createNewExhibition () {
       try {
         this.verifyEducationAreas()
         this.verifyImages()
+        this.verifySound()
         const exhibition = this.newExhibition
         const response = await axios.post('/private/exhibitions', exhibition, {
           headers: this.$store.getters.getHeader
