@@ -39,6 +39,10 @@ export default createStore({
       {
         name: 'Quiz',
         active: false
+      },
+      {
+        name: 'Sound',
+        active: false
       }
     ],
     token: localStorage.getItem('token') || null,

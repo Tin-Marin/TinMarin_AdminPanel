@@ -1,17 +1,27 @@
 <template>
     <div>
-        <loader v-if="isLoading" />
-        <div>
-            <input type="file" @change="previewSound" accept="sound/*">
-        </div>
-        <div>
-            <p>Progress: {{ uploadValue.toFixed() + "%" }}
+      <table class='striped centered'>
+        <thead>
+          <tr>
+            <th v-for="(field, index) in fields" :key="index">{{ field }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <button class='waves-effect green btn' @click="onUpload">Subir</button>
+            </td>
+            <td>
+              <input type='file' @change="previewSound" accept='sound/*'/>
+            </td>
+            <td>
+              <p>Progress: {{ uploadValue.toFixed() + "%" }}
                 <progress id="progress" :value="uploadValue" max="100"></progress>
-            </p>
-        </div>
-        <div v-if="soundData != null">
-            <button @click="onUpload">Subir</button>
-        </div>
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 </template>
 
@@ -24,7 +34,8 @@ export default {
     return {
       soundData: null,
       sound: null,
-      uploadValue: 0
+      uploadValue: 0,
+      fields: ['Actions', 'Nombre', 'Progress']
     }
   },
   methods: {
@@ -67,3 +78,23 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+table {
+  margin-top: 140px;
+}
+
+.btn {
+  cursor: pointer;
+  position: static;
+  width: 100px;
+}
+
+i {
+  cursor: pointer;
+}
+
+select {
+  display: initial;
+}
+</style>
