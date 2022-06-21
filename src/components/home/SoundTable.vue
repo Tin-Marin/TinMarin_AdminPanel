@@ -9,16 +9,39 @@
         <tbody>
           <tr>
             <td>
-              <button class='waves-effect green btn' @click="onUpload">Subir</button>
+              <div>
+                <div class='waves-effect file-field input-file'>
+                  <div class='waves-effect blue btn'>
+                    <span>File</span>
+                    <input type='file' @change="previewSound" accept='sound/*'/>
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text" placeholder="Seleccionar un sonido">
+                  </div>
+                </div>
+                <div class="div">
+                  <button class='waves-effect green btn' @click="onUpload">Subir</button>
+                </div>
+              </div>
+            </td>
+              <td>
+              </td>
+              <td>
+              </td>
+            <td>
             </td>
             <td>
-              <input type='file' @change="previewSound" accept='sound/*'/>
-            </td>
-            <td>
-              <p>Progress: {{ uploadValue.toFixed() + "%" }}
-                <progress id="progress" :value="uploadValue" max="100"></progress>
+              <p>{{ uploadValue.toFixed() + "%" }}
+                <progress class="determinate" id="progress" :value="uploadValue" max="100"></progress>
               </p>
             </td>
+          </tr>
+          <tr v-for="field of sounds" :key="field.id">
+            <td><i class="material-icons red-text" @click="deleteSound(field._id) && deleteFire(field.name)">clear</i></td>
+            <td>{{ field._id }}</td>
+            <td>{{ field.name }}</td>
+            <td>{{ field.url }}</td>
+            <td></td>
           </tr>
         </tbody>
       </table>
@@ -27,6 +50,7 @@
 
 <script>
 import firebase from 'firebase/compat/app'
+import axios from 'axios'
 
 export default {
   template: 'soundtable',
@@ -35,14 +59,76 @@ export default {
       soundData: null,
       sound: null,
       uploadValue: 0,
-      fields: ['Actions', 'Nombre', 'Progress']
+      newSound: {
+        url: '',
+        name: ''
+      },
+      fields: ['Actions', 'ID', 'Nombre', 'URL', 'Progress'],
+      sounds: []
     }
   },
   methods: {
+    async createNewSound () {
+      const sound = this.newSound
+      try {
+        const response = await axios.post('/sounds', sound, {
+          headers: this.$store.getters.getHeader
+        })
+        if (response.data && response.status === 201) {
+          this.newSound = {
+            url: '',
+            name: ''
+          }
+          await this.findSounds()
+        }
+      } catch (error) {
+        if (error.response.status === 401) this.$router.push('/logout')
+      }
+    },
+    async findSounds () {
+      try {
+        this.$store.dispatch('changeLoadingState')
+        const sounds = await axios.get('/private/sounds', {
+          headers: this.$store.getters.getHeader
+        })
+        this.$store.dispatch('changeLoadingState')
+        this.sounds = sounds.data
+      } catch (error) {
+        if (error.response.status === 401) {
+          this.$router.push('/logout')
+        }
+      }
+    },
+    async deleteSound (_id) {
+      try {
+        const sound = await axios.delete('/private/sounds/' + _id, {
+          headers: this.$store.getters.getHeader
+        })
+        if (sound.status === 204) {
+          console.log('SE PUDO MONGO')
+          await this.findSounds()
+        }
+      } catch (error) {
+        if (error.response.status === 401) {
+          this.$router.push('/logout')
+        }
+      }
+    },
     previewSound (event) {
       this.uploadValue = 0
       this.sound = null
       this.soundData = event.target.files[0]
+    },
+    async deleteFire (soundName) {
+      const soundRef = firebase.storage().ref(`${soundName}`)
+      firebase.deleteObject(soundRef).then(() => {
+        console.log('SE PUDO FIREBASE')
+        this.findSounds()
+      }).catch(error => {
+        if (error.response.status === 401) {
+          this.$router.push('/logout')
+        }
+      })
     },
     onUpload () {
       this.sound = null
@@ -53,28 +139,20 @@ export default {
         }, error => { console.log(error.message) },
         () => {
           this.uploadValue = 100
-          storageRef.snapshot.ref.getDownloadURL().then((url) => { this.sound = url })
+          storageRef.snapshot.ref.getDownloadURL().then((url) => {
+            this.sound = url
+            this.newSound = {
+              url: this.sound,
+              name: this.soundData.name
+            }
+            this.createNewSound()
+          })
         }
       )
     }
-    /*  startEditing () {
-            if (this.editing) {
-                this.editing = false
-            } else {
-                this.editing = true
-            }
-        },
-        async createNewSound() {
-            try{
-                const storage = firebase.getStorage()
-                const storageRef = ref(storage, this.newSound)
-                const storageSoundRef = ref(storage, 'sounds/'+this.newSound)
-                storageRef.name === storageSoundRef.name
-                storageRef.fullPath === storageSoundRef.fullPath
-            } catch (error) {
-                if (error.response.status === 401) this.$router.push('/logout')
-            }
-        } */
+  },
+  async mounted () {
+    await this.findSounds()
   }
 }
 </script>
@@ -88,6 +166,10 @@ table {
   cursor: pointer;
   position: static;
   width: 100px;
+}
+
+.div {
+  margin-top: 2em;
 }
 
 i {
