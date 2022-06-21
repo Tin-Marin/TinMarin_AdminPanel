@@ -10,12 +10,13 @@
       <ul class="tabs tabs-transparent">
         <li class="tab" @click="changeView(0)"><a>Áreas de educación</a></li>
         <li class="tab" @click="changeView(2)"><a>Exhibiciones</a></li>
-        <li class="tab" @click="changeView(3)"><a>FAQ</a></li>
-        <li class="tab" @click="changeView(4)"><a>Recomendación</a></li>
-        <li class="tab" @click="changeView(5)"><a>Sitios recomendados</a></li>
-        <li class="tab" @click="changeView(6)"><a>Sugerencias</a></li>
-        <li class="tab" @click="changeView(7)"><a>Tipos de Sugerencias</a></li>
-        <li class="tab" @click="changeView(8)"><a>Quiz</a></li>
+        <li class="tab" @click="changeView(3)"><a>Quiz</a></li>
+        <li class="tab" @click="changeView(4)"><a>Sonidos</a></li>
+        <li class="tab" @click="changeView(5)"><a>Sugerencias</a></li>
+        <li class="tab" @click="changeView(6)"><a>Tipos de Sugerencias</a></li>
+        <li class="tab" @click="changeView(7)"><a>FAQ</a></li>
+        <li class="tab" @click="changeView(8)"><a>Recomendación</a></li>
+        <li class="tab" @click="changeView(9)"><a>Sitios recomendados</a></li>
       </ul>
     </div>
   </nav>
