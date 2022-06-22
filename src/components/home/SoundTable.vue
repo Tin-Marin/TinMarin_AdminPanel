@@ -32,7 +32,7 @@
             </td>
           </tr>
           <tr v-for="field of sounds" :key="field.id">
-            <td><i class="material-icons red-text" @click="deleteSound(field._id) && deleteFire(field.url)">clear</i></td>
+            <td><i class="material-icons red-text" @click="deleteSound(field._id) && deleteFire(field.url)" v-if="field.name!='exhibitSound.mp3'">clear</i></td>
             <td>{{ field._id }}</td>
             <td>{{ field.name }}</td>
             <td>{{ field.url }}</td>
