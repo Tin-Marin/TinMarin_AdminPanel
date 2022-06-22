@@ -19,8 +19,8 @@
                     <input class="file-path validate" type="text" placeholder="Seleccionar un sonido">
                   </div>
                 </div>
-                <div class="div">
-                  <button class='waves-effect green btn' @click="onUpload">Subir</button>
+                <div class="div" v-if="soundData!=null">
+                  <button class='waves-effect green btn' @click="onUpload">Save</button>
                 </div>
               </div>
             </td>
@@ -30,14 +30,9 @@
               </td>
             <td>
             </td>
-            <td>
-              <p>{{ uploadValue.toFixed() + "%" }}
-                <progress class="determinate" id="progress" :value="uploadValue" max="100"></progress>
-              </p>
-            </td>
           </tr>
           <tr v-for="field of sounds" :key="field.id">
-            <td><i class="material-icons red-text" @click="deleteSound(field._id) && deleteFire(field.name)">clear</i></td>
+            <td><i class="material-icons red-text" @click="deleteSound(field._id) && deleteFire(field.url)">clear</i></td>
             <td>{{ field._id }}</td>
             <td>{{ field.name }}</td>
             <td>{{ field.url }}</td>
@@ -63,7 +58,7 @@ export default {
         url: '',
         name: ''
       },
-      fields: ['Actions', 'ID', 'Nombre', 'URL', 'Progress'],
+      fields: ['Actions', 'ID', 'Nombre', 'URL'],
       sounds: []
     }
   },
@@ -100,12 +95,12 @@ export default {
       }
     },
     async deleteSound (_id) {
+      console.log('EL ID', _id)
       try {
         const sound = await axios.delete('/private/sounds/' + _id, {
           headers: this.$store.getters.getHeader
         })
         if (sound.status === 204) {
-          console.log('SE PUDO MONGO')
           await this.findSounds()
         }
       } catch (error) {
@@ -119,16 +114,11 @@ export default {
       this.sound = null
       this.soundData = event.target.files[0]
     },
-    async deleteFire (soundName) {
-      const soundRef = firebase.storage().ref(`${soundName}`)
-      firebase.deleteObject(soundRef).then(() => {
-        console.log('SE PUDO FIREBASE')
-        this.findSounds()
-      }).catch(error => {
-        if (error.response.status === 401) {
-          this.$router.push('/logout')
-        }
-      })
+    deleteFire (soundURL) {
+      const soundRef = firebase.storage().refFromURL(soundURL)
+      soundRef.delete().then(() => {
+        console.log('Archivo eliminado con exito de firebase storage')
+      }).catch((error) => { console.log(error.message) })
     },
     onUpload () {
       this.sound = null

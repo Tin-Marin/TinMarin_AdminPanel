@@ -1,14 +1,14 @@
 <template>
   <home-nav-bar />
-  <education-area-table :class="views[0].active ? '' : 'hide'" />
-  <exhibition-table :class="views[2].active ? '' : 'hide'" />
-  <faq-table :class="views[3].active ? '' : 'hide'"/>
-  <recommendation-table :class="views[4].active ? '' : 'hide'" />
-  <recommended-website-table :class="views[5].active ? '' : 'hide'" />
-  <suggestion-table :class="views[6].active ? '' : 'hide'" />
-  <suggestion-type-table :class="views[7].active ? '' : 'hide'" />
-  <quiz-table :class="views[8].active ? '' : 'hide'" />
-  <sound-table :class="views[9].active ? '' : 'hide'"/>
+  <exhibition-table :class="views[0].active ? '' : 'hide'" />
+  <quiz-table :class="views[1].active ? '' : 'hide'" />
+  <sound-table :class="views[2].active ? '' : 'hide'"/>
+  <education-area-table :class="views[3].active ? '' : 'hide'" />
+  <suggestion-table :class="views[4].active ? '' : 'hide'" />
+  <suggestion-type-table :class="views[5].active ? '' : 'hide'" />
+  <faq-table :class="views[6].active ? '' : 'hide'"/>
+  <recommendation-table :class="views[7].active ? '' : 'hide'" />
+  <recommended-website-table :class="views[8].active ? '' : 'hide'" />
 </template>
 
 <script>

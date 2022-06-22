@@ -16,7 +16,7 @@
         </tr>
       </tbody>
     </table>
-    <button class="download-btn" @click="goToExcel">
+    <button class="waves-effect blue btn" @click="goToExcel">
       Revisar Excel
     </button>
   </div>
@@ -80,18 +80,9 @@ table {
 i {
   cursor: pointer;
 }
-
-.download-btn {
-  background-color: DodgerBlue;
-  border: none;
-  color: white;
-  padding: 12px 30px;
-  margin: 12px 0;
+.btn {
   cursor: pointer;
-  font-size: 20px;
-}
-
-.download-btn:hover {
-  background-color: RoyalBlue;
+  position: static;
+  width: 200px;
 }
 </style>

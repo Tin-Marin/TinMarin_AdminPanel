@@ -106,7 +106,9 @@
         </div>
         <div class="row">
           <div class="col s12">
-            <textarea placeholder="URL del Sonido de exhibición" v-model="newExhibition.sound"></textarea>
+            <select v-model="newExhibition.sound" required>
+              <option v-for="(element, index) in sounds" :key="index" :value="element.url">{{ element.name }}</option>
+            </select>
           </div>
         </div>
         <a v-if="creating" class="waves-effect green btn" @click="createNewExhibition">save</a>
@@ -182,7 +184,8 @@ export default {
       fields: ['ID', 'Nombre', 'Descripción', 'Imagen', 'Patrocinador', 'Imagen del patrocinador', 'Áreas de educación', 'Edad min.', 'Edad Max', 'Duración', 'Capacidad', 'Dato curioso', 'Sonido'],
       educationAreas: [],
       imagess: [],
-      exhibitions: []
+      exhibitions: [],
+      sounds: []
     }
   },
   methods: {
@@ -209,6 +212,12 @@ export default {
       const response = await axios.get('/education-areas')
       if (response.status === 200) this.educationAreas = response.data
     },
+    async retrieveSounds () {
+      const response = await axios.get('/private/sounds', {
+        headers: this.$store.getters.getHeader
+      })
+      if (response.status === 200) this.sounds = response.data
+    },
     async retrieveImages () {
       const response = await axios.get('/images')
       if (response.status === 200) this.imagess = response.data
@@ -228,7 +237,7 @@ export default {
       this.newExhibition.images = fixedArray
     },
     verifySound () {
-      if (this.newExhibition.sound === '') this.newExhibition.sound = 'https://firebasestorage.googleapis.com/v0/b/tinmarinapp-32b99.appspot.com/o/exhibitSound.mp3?alt=media&token=68d25e82-34b4-4cad-82f7-303bde8b7eb1'
+      if (this.newExhibition.sound === '') this.newExhibition.sound = 'https://firebasestorage.googleapis.com/v0/b/tinmarinapp-32b99.appspot.com/o/exhibitSound.mp3?alt=media&token=c1fa174d-6763-4d30-9f16-d8a2c83d98a4'
     },
     async createNewExhibition () {
       try {
@@ -317,6 +326,7 @@ export default {
   async mounted () {
     await this.findExhibitions()
     await this.retrieveEducationAreas()
+    await this.retrieveSounds()
   }
 }
 </script>
