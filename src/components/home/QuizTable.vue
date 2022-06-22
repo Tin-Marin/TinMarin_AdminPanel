@@ -59,7 +59,7 @@
           </td>
           <td><input v-model='field.correct_option' /></td>
           <td>
-            <select v-model="field.exhibition" required>
+            <select class="browser-default" v-model="field.exhibition" required>
               <option v-for="(element, index) in exhibitions" :key="index" :value="element.name">{{element.name}}</option>
             </select>
           </td>

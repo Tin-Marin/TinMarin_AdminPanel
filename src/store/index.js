@@ -5,15 +5,27 @@ export default createStore({
   state: {
     views: [
       {
+        name: 'Exhibitions',
+        active: false
+      },
+      {
+        name: 'Quiz',
+        active: false
+      },
+      {
+        name: 'Sound',
+        active: false
+      },
+      {
         name: 'Education Areas',
         active: false
       },
       {
-        name: 'Exhibition Rooms',
+        name: 'Suggestions',
         active: false
       },
       {
-        name: 'Exhibitions',
+        name: 'Suggestion Types',
         active: false
       },
       {
@@ -26,18 +38,6 @@ export default createStore({
       },
       {
         name: 'Recommended Websites',
-        active: false
-      },
-      {
-        name: 'Suggestions',
-        active: false
-      },
-      {
-        name: 'Suggestion Types',
-        active: false
-      },
-      {
-        name: 'Quiz',
         active: false
       }
     ],

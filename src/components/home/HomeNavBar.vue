@@ -8,14 +8,15 @@
     </div>
     <div class="nav-content">
       <ul class="tabs tabs-transparent">
-        <li class="tab" @click="changeView(0)"><a>Áreas de educación</a></li>
-        <li class="tab" @click="changeView(2)"><a>Exhibiciones</a></li>
-        <li class="tab" @click="changeView(3)"><a>FAQ</a></li>
-        <li class="tab" @click="changeView(4)"><a>Recomendación</a></li>
-        <li class="tab" @click="changeView(5)"><a>Sitios recomendados</a></li>
-        <li class="tab" @click="changeView(6)"><a>Sugerencias</a></li>
-        <li class="tab" @click="changeView(7)"><a>Tipos de Sugerencias</a></li>
-        <li class="tab" @click="changeView(8)"><a>Quiz</a></li>
+        <li class="tab" @click="changeView(0)"><a>Exhibiciones</a></li>
+        <li class="tab" @click="changeView(1)"><a>Quiz</a></li>
+        <li class="tab" @click="changeView(2)"><a>Sonidos</a></li>
+        <li class="tab" @click="changeView(3)"><a>Áreas de educación</a></li>
+        <li class="tab" @click="changeView(4)"><a>Sugerencias</a></li>
+        <li class="tab" @click="changeView(5)"><a>Tipos de Sugerencias</a></li>
+        <li class="tab" @click="changeView(6)"><a>FAQ</a></li>
+        <li class="tab" @click="changeView(7)"><a>Recomendación</a></li>
+        <li class="tab" @click="changeView(8)"><a>Sitios recomendados</a></li>
       </ul>
     </div>
   </nav>
@@ -55,14 +56,12 @@ nav {
   position: fixed;
   top: 0;
 }
-
 img {
   height: 65px;
   margin-top: 0.5em;
   margin-bottom: -1.5em;
   margin-left: 7em;
 }
-
 #logout {
   cursor:pointer;
   padding-left: 25px;
